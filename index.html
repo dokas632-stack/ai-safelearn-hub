@@ -58,11 +58,14 @@
   </header>
 
   <div class="grid">
-    <div class="card metric">
-      <div class="label">SYSTEM STATUS</div>
-      <div class="value status"><span class="dot"></span>SAFE</div>
-      <div class="sub">All connected devices responding</div>
-    </div>
+   <div class="card metric">
+  <div class="label">SYSTEM STATUS</div>
+  <div class="value status">
+    <span id="statusDot" class="dot"></span>
+    <span id="systemStatus">SAFE</span>
+  </div>
+  <div id="statusMessage" class="sub">All connected devices responding</div>
+</div>
     <div class="card metric">
       <div class="label">TEMPERATURE</div>
       <div class="value" id="temp">26°C</div>
@@ -204,7 +207,31 @@ onValue(sensorsRef, (snapshot) => {
   console.log("Live sensor data:", data);
   let temperature = Number(data.temperature);
 let humidity = Number(data.humidity);
+const systemStatus = document.getElementById("systemStatus");
+const statusDot = document.getElementById("statusDot");
+const statusMessage = document.getElementById("statusMessage");
 
+if (temperature >= 38 || humidity >= 80) {
+  systemStatus.textContent = "DANGER";
+  statusMessage.textContent = "Unsafe environmental conditions detected";
+
+  statusDot.style.background = "var(--red)";
+  statusDot.style.boxShadow = "0 0 14px var(--red)";
+
+} else if (temperature >= 34 || humidity >= 70) {
+  systemStatus.textContent = "WARNING";
+  statusMessage.textContent = "Environmental conditions should be monitored";
+
+  statusDot.style.background = "var(--yellow)";
+  statusDot.style.boxShadow = "0 0 14px var(--yellow)";
+
+} else {
+  systemStatus.textContent = "SAFE";
+  statusMessage.textContent = "All connected devices responding";
+
+  statusDot.style.background = "var(--green)";
+  statusDot.style.boxShadow = "0 0 14px var(--green)";
+}
 const environmentStatus = document.getElementById("environmentStatus");
 const safetyStatus = document.getElementById("safetyStatus");
 const learningStatus = document.getElementById("learningStatus");
