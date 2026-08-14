@@ -150,5 +150,29 @@ function triggerSOS(){
   alert("🚨 SAFELEARN EMERGENCY\\n\\nSOS button activated.\\nParent/teacher notification sent.");
 }
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.1/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.7.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
+    authDomain: "ai-safelearn-hub.firebaseapp.com",
+    databaseURL: "https://ai-safelearn-hub-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "ai-safelearn-hub",
+    storageBucket: "ai-safelearn-hub.firebasestorage.app",
+    messagingSenderId: "412760110056",
+    appId: "1:412760110056:web:48d33cb86ce0332bf4ea5d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+
+  // Test Firebase connection
+  const testRef = ref(database, "test");
+
+  onValue(testRef, (snapshot) => {
+    console.log("Firebase data:", snapshot.val());
+  });
+</script>
 </body>
 </html>
