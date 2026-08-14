@@ -221,7 +221,7 @@ function triggerSOS(){
 
   let previousState = "SAFE";
 
-  function addAlert(message, type = "yellow") {
+  function addAlert(message, type) {
     const box = document.getElementById("alerts");
 
     const now = new Date().toLocaleTimeString([], {
@@ -242,10 +242,7 @@ function triggerSOS(){
 
     const data = snapshot.val();
 
-    if (!data) {
-      console.log("No sensor data found.");
-      return;
-    }
+    if (!data) return;
 
     console.log("Live sensor data:", data);
 
@@ -264,51 +261,39 @@ function triggerSOS(){
     // TEMPERATURE & HUMIDITY
     // =========================
 
-    if (!Number.isNaN(temperature)) {
-      document.getElementById("temp").textContent =
-        temperature + "°C";
-    }
+    document.getElementById("temp").textContent =
+      temperature + "°C";
 
-    if (!Number.isNaN(humidity)) {
-      document.getElementById("humidity").textContent =
-        humidity + "%";
-    }
+    document.getElementById("humidity").textContent =
+      humidity + "%";
 
     // =========================
     // ENVIRONMENT BARS
     // =========================
 
-    if (!Number.isNaN(light)) {
-      document.getElementById("lightBar").style.width =
-        Math.max(0, Math.min(100, light)) + "%";
+    document.getElementById("lightBar").style.width =
+      Math.max(0, Math.min(100, light)) + "%";
 
-      document.getElementById("lightValue").textContent =
-        light + "%";
-    }
+    document.getElementById("lightValue").textContent =
+      light + "%";
 
-    if (!Number.isNaN(air)) {
-      document.getElementById("airBar").style.width =
-        Math.max(0, Math.min(100, air)) + "%";
+    document.getElementById("airBar").style.width =
+      Math.max(0, Math.min(100, air)) + "%";
 
-      document.getElementById("airValue").textContent =
-        air + "%";
-    }
+    document.getElementById("airValue").textContent =
+      air + "%";
 
-    if (!Number.isNaN(noise)) {
-      document.getElementById("noiseBar").style.width =
-        Math.max(0, Math.min(100, noise)) + "%";
+    document.getElementById("noiseBar").style.width =
+      Math.max(0, Math.min(100, noise)) + "%";
 
-      document.getElementById("noiseValue").textContent =
-        noise + "%";
-    }
+    document.getElementById("noiseValue").textContent =
+      noise + "%";
 
-    if (!Number.isNaN(activity)) {
-      document.getElementById("activityBar").style.width =
-        Math.max(0, Math.min(100, activity)) + "%";
+    document.getElementById("activityBar").style.width =
+      Math.max(0, Math.min(100, activity)) + "%";
 
-      document.getElementById("activityValue").textContent =
-        activity + "%";
-    }
+    document.getElementById("activityValue").textContent =
+      activity + "%";
 
     // =========================
     // MAIN SYSTEM STATUS
@@ -325,7 +310,12 @@ function triggerSOS(){
 
     let currentState;
 
-    if (temperature >= 38 || humidity >= 80) {
+    if (
+      temperature >= 38 ||
+      humidity >= 80 ||
+      air < 30 ||
+      noise >= 90
+    ) {
 
       currentState = "DANGER";
 
@@ -337,7 +327,12 @@ function triggerSOS(){
       statusDot.style.boxShadow =
         "0 0 14px var(--red)";
 
-    } else if (temperature >= 34 || humidity >= 70) {
+    } else if (
+      temperature >= 34 ||
+      humidity >= 70 ||
+      air < 50 ||
+      noise >= 70
+    ) {
 
       currentState = "WARNING";
 
@@ -369,41 +364,113 @@ function triggerSOS(){
     const environmentStatus =
       document.getElementById("environmentStatus");
 
+    const activityStatus =
+      document.getElementById("activityStatus");
+
     const safetyStatus =
       document.getElementById("safetyStatus");
 
     const learningStatus =
       document.getElementById("learningStatus");
 
-    if (currentState === "DANGER") {
+    // Environment
+
+    if (
+      temperature >= 38 ||
+      humidity >= 80 ||
+      air < 30
+    ) {
 
       environmentStatus.textContent = "UNSAFE";
       environmentStatus.className = "tag red";
 
-      safetyStatus.textContent = "DANGER";
-      safetyStatus.className = "tag red";
-
-      learningStatus.textContent = "TAKE A BREAK";
-      learningStatus.className = "tag red";
-
-    } else if (currentState === "WARNING") {
+    } else if (
+      temperature >= 34 ||
+      humidity >= 70 ||
+      air < 50
+    ) {
 
       environmentStatus.textContent = "WARNING";
       environmentStatus.className = "tag yellow";
-
-      safetyStatus.textContent = "CAUTION";
-      safetyStatus.className = "tag yellow";
-
-      learningStatus.textContent = "MONITOR";
-      learningStatus.className = "tag yellow";
 
     } else {
 
       environmentStatus.textContent = "SUITABLE";
       environmentStatus.className = "tag green";
+    }
+
+    // Activity
+
+    if (activity < 30) {
+
+      activityStatus.textContent = "LOW ACTIVITY";
+      activityStatus.className = "tag yellow";
+
+    } else if (activity > 90) {
+
+      activityStatus.textContent = "HIGH ACTIVITY";
+      activityStatus.className = "tag yellow";
+
+    } else {
+
+      activityStatus.textContent = "NORMAL";
+      activityStatus.className = "tag green";
+    }
+
+    // Safety
+
+    if (
+      temperature >= 38 ||
+      humidity >= 80 ||
+      air < 30 ||
+      noise >= 90
+    ) {
+
+      safetyStatus.textContent = "DANGER";
+      safetyStatus.className = "tag red";
+
+    } else if (
+      temperature >= 34 ||
+      humidity >= 70 ||
+      air < 50 ||
+      noise >= 70
+    ) {
+
+      safetyStatus.textContent = "CAUTION";
+      safetyStatus.className = "tag yellow";
+
+    } else {
 
       safetyStatus.textContent = "NO ISSUE";
       safetyStatus.className = "tag green";
+    }
+
+    // Learning assistant
+
+    if (noise >= 70) {
+
+      learningStatus.textContent = "QUIETER AREA";
+      learningStatus.className = "tag yellow";
+
+    } else if (light < 30) {
+
+      learningStatus.textContent = "IMPROVE LIGHTING";
+      learningStatus.className = "tag yellow";
+
+    } else if (activity < 30) {
+
+      learningStatus.textContent = "TAKE A MOVEMENT BREAK";
+      learningStatus.className = "tag yellow";
+
+    } else if (
+      temperature >= 38 ||
+      humidity >= 80
+    ) {
+
+      learningStatus.textContent = "TAKE A BREAK";
+      learningStatus.className = "tag red";
+
+    } else {
 
       learningStatus.textContent = "READY";
       learningStatus.className = "tag";
@@ -439,6 +506,7 @@ function triggerSOS(){
 
       previousState = currentState;
     }
+
   });
 </script>
 </body>
