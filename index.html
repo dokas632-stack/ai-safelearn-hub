@@ -235,6 +235,24 @@ function triggerSOS(){
  const sensorsRef = ref(database, "sensors");
 
 onValue(sensorsRef, (snapshot) => {
+  let temperature = Number(data.temperature);
+let humidity = Number(data.humidity);
+  const light = Number(data.light);
+const air = Number(data.air);
+const noise = Number(data.noise);
+const activity = Number(data.activity);
+
+document.getElementById("lightBar").style.width = light + "%";
+document.getElementById("lightValue").textContent = light + "%";
+
+document.getElementById("airBar").style.width = air + "%";
+document.getElementById("airValue").textContent = air + "%";
+
+document.getElementById("noiseBar").style.width = noise + "%";
+document.getElementById("noiseValue").textContent = noise + "%";
+
+document.getElementById("activityBar").style.width = activity + "%";
+document.getElementById("activityValue").textContent = activity + "%";
   const data = snapshot.val();
 
   if (!data) return;
@@ -335,24 +353,6 @@ if (currentState !== previousState) {
 
   previousState = currentState;
 }
-  let temperature = Number(data.temperature);
-let humidity = Number(data.humidity);
-  const light = Number(data.light);
-const air = Number(data.air);
-const noise = Number(data.noise);
-const activity = Number(data.activity);
-
-document.getElementById("lightBar").style.width = light + "%";
-document.getElementById("lightValue").textContent = light + "%";
-
-document.getElementById("airBar").style.width = air + "%";
-document.getElementById("airValue").textContent = air + "%";
-
-document.getElementById("noiseBar").style.width = noise + "%";
-document.getElementById("noiseValue").textContent = noise + "%";
-
-document.getElementById("activityBar").style.width = activity + "%";
-document.getElementById("activityValue").textContent = activity + "%";
 });
 </script>
 </body>
