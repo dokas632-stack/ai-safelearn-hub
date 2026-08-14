@@ -235,8 +235,20 @@ function triggerSOS(){
  const sensorsRef = ref(database, "sensors");
 
 onValue(sensorsRef, (snapshot) => {
-  let temperature = Number(data.temperature);
-let humidity = Number(data.humidity);
+ 
+  const data = snapshot.val();
+
+  if (!data) return;
+
+  if (data.temperature !== undefined) {
+    document.getElementById("temp").textContent =
+      data.temperature + "°C";
+  }
+
+  if (data.humidity !== undefined) {
+    document.getElementById("humidity").textContent =
+      data.humidity + "%";
+  }
   const light = Number(data.light);
 const air = Number(data.air);
 const noise = Number(data.noise);
@@ -253,20 +265,6 @@ document.getElementById("noiseValue").textContent = noise + "%";
 
 document.getElementById("activityBar").style.width = activity + "%";
 document.getElementById("activityValue").textContent = activity + "%";
-  const data = snapshot.val();
-
-  if (!data) return;
-
-  if (data.temperature !== undefined) {
-    document.getElementById("temp").textContent =
-      data.temperature + "°C";
-  }
-
-  if (data.humidity !== undefined) {
-    document.getElementById("humidity").textContent =
-      data.humidity + "%";
-  }
-
   console.log("Live sensor data:", data);
   let temperature = Number(data.temperature);
 let humidity = Number(data.humidity);
