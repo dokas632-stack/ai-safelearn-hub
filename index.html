@@ -83,15 +83,43 @@
     </div>
 
     <div class="card wide">
-      <h2>Environment</h2>
-      <div class="bars">
-        <div class="barrow"><span>Light</span><div class="track"><div class="fill" style="width:82%"></div></div><b>GOOD</b></div>
-        <div class="barrow"><span>Air indicator</span><div class="track"><div class="fill" style="width:70%"></div></div><b>NORMAL</b></div>
-        <div class="barrow"><span>Noise</span><div class="track"><div class="fill" style="width:25%"></div></div><b>LOW</b></div>
-        <div class="barrow"><span>Activity</span><div class="track"><div class="fill" style="width:78%"></div></div><b>ACTIVE</b></div>
+  <h2>Environment</h2>
+  <div class="bars">
+
+    <div class="barrow">
+      <span>Light</span>
+      <div class="track">
+        <div id="lightBar" class="fill" style="width:0%"></div>
       </div>
+      <b id="lightValue">--</b>
     </div>
 
+    <div class="barrow">
+      <span>Air indicator</span>
+      <div class="track">
+        <div id="airBar" class="fill" style="width:0%"></div>
+      </div>
+      <b id="airValue">--</b>
+    </div>
+
+    <div class="barrow">
+      <span>Noise</span>
+      <div class="track">
+        <div id="noiseBar" class="fill" style="width:0%"></div>
+      </div>
+      <b id="noiseValue">--</b>
+    </div>
+
+    <div class="barrow">
+      <span>Activity</span>
+      <div class="track">
+        <div id="activityBar" class="fill" style="width:0%"></div>
+      </div>
+      <b id="activityValue">--</b>
+    </div>
+
+  </div>
+</div>
     <div class="card wide">
   <h2>AI Decision Engine</h2>
 
@@ -307,6 +335,24 @@ if (currentState !== previousState) {
 
   previousState = currentState;
 }
+  let temperature = Number(data.temperature);
+let humidity = Number(data.humidity);
+  const light = Number(data.light);
+const air = Number(data.air);
+const noise = Number(data.noise);
+const activity = Number(data.activity);
+
+document.getElementById("lightBar").style.width = light + "%";
+document.getElementById("lightValue").textContent = light + "%";
+
+document.getElementById("airBar").style.width = air + "%";
+document.getElementById("airValue").textContent = air + "%";
+
+document.getElementById("noiseBar").style.width = noise + "%";
+document.getElementById("noiseValue").textContent = noise + "%";
+
+document.getElementById("activityBar").style.width = activity + "%";
+document.getElementById("activityValue").textContent = activity + "%";
 });
 </script>
 </body>
