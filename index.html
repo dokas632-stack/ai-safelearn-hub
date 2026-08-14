@@ -168,11 +168,25 @@ function triggerSOS(){
   const database = getDatabase(app);
 
   // Test Firebase connection
-  const testRef = ref(database, "test");
+ const sensorsRef = ref(database, "sensors");
 
-  onValue(testRef, (snapshot) => {
-    console.log("Firebase data:", snapshot.val());
-  });
+onValue(sensorsRef, (snapshot) => {
+  const data = snapshot.val();
+
+  if (!data) return;
+
+  if (data.temperature !== undefined) {
+    document.getElementById("temp").textContent =
+      data.temperature + "°C";
+  }
+
+  if (data.humidity !== undefined) {
+    document.getElementById("humidity").textContent =
+      data.humidity + "%";
+  }
+
+  console.log("Live sensor data:", data);
+});
 </script>
 </body>
 </html>
