@@ -90,12 +90,28 @@
     </div>
 
     <div class="card wide">
-      <h2>AI Decision Engine</h2>
-      <div class="event"><span>Environment analysis</span><span class="tag green">SUITABLE</span></div>
-      <div class="event"><span>Activity analysis</span><span class="tag green">NORMAL</span></div>
-      <div class="event"><span>Safety analysis</span><span class="tag green">NO ISSUE</span></div>
-      <div class="event"><span>Learning assistant</span><span class="tag">READY</span></div>
-    </div>
+  <h2>AI Decision Engine</h2>
+
+  <div class="event">
+    <span>Environment analysis</span>
+    <span id="environmentStatus" class="tag green">SUITABLE</span>
+  </div>
+
+  <div class="event">
+    <span>Activity analysis</span>
+    <span id="activityStatus" class="tag green">NORMAL</span>
+  </div>
+
+  <div class="event">
+    <span>Safety analysis</span>
+    <span id="safetyStatus" class="tag green">NO ISSUE</span>
+  </div>
+
+  <div class="event">
+    <span>Learning assistant</span>
+    <span id="learningStatus" class="tag">READY</span>
+  </div>
+</div>
 
     <div class="card full">
       <div class="alertbox">
@@ -186,6 +202,43 @@ onValue(sensorsRef, (snapshot) => {
   }
 
   console.log("Live sensor data:", data);
+  let temperature = Number(data.temperature);
+let humidity = Number(data.humidity);
+
+const environmentStatus = document.getElementById("environmentStatus");
+const safetyStatus = document.getElementById("safetyStatus");
+const learningStatus = document.getElementById("learningStatus");
+
+if (temperature >= 38 || humidity >= 80) {
+  environmentStatus.textContent = "UNSAFE";
+  environmentStatus.className = "tag red";
+
+  safetyStatus.textContent = "DANGER";
+  safetyStatus.className = "tag red";
+
+  learningStatus.textContent = "TAKE A BREAK";
+  learningStatus.className = "tag red";
+
+} else if (temperature >= 34 || humidity >= 70) {
+  environmentStatus.textContent = "WARNING";
+  environmentStatus.className = "tag yellow";
+
+  safetyStatus.textContent = "CAUTION";
+  safetyStatus.className = "tag yellow";
+
+  learningStatus.textContent = "MONITOR";
+  learningStatus.className = "tag yellow";
+
+} else {
+  environmentStatus.textContent = "SUITABLE";
+  environmentStatus.className = "tag green";
+
+  safetyStatus.textContent = "NO ISSUE";
+  safetyStatus.className = "tag green";
+
+  learningStatus.textContent = "READY";
+  learningStatus.className = "tag";
+}
 });
 </script>
 </body>
