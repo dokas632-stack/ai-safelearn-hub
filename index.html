@@ -198,25 +198,12 @@ function triggerSOS(){
 }
 </script>
 <script type="module">
-  function addAlert(message, type = "yellow") {
-  const box = document.getElementById("alerts");
-
-  const now = new Date().toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  box.insertAdjacentHTML(
-    "afterbegin",
-    `<div class="event">
-      <span>${message}</span>
-      <span class="tag ${type}">${now}</span>
-    </div>`
-  );
-}
-  let previousState = "SAFE";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+  import {
+    getDatabase,
+    ref,
+    onValue
+  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
@@ -230,128 +217,229 @@ function triggerSOS(){
 
   const app = initializeApp(firebaseConfig);
   const database = getDatabase(app);
+  const sensorsRef = ref(database, "sensors");
 
-  // Test Firebase connection
- const sensorsRef = ref(database, "sensors");
+  let previousState = "SAFE";
 
-onValue(sensorsRef, (snapshot) => {
- 
-  const data = snapshot.val();
+  function addAlert(message, type = "yellow") {
+    const box = document.getElementById("alerts");
 
-  if (!data) return;
+    const now = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
 
-  if (data.temperature !== undefined) {
-    document.getElementById("temp").textContent =
-      data.temperature + "°C";
+    box.insertAdjacentHTML(
+      "afterbegin",
+      `<div class="event">
+        <span>${message}</span>
+        <span class="tag ${type}">${now}</span>
+      </div>`
+    );
   }
 
-  if (data.humidity !== undefined) {
-    document.getElementById("humidity").textContent =
-      data.humidity + "%";
-  }
-  const light = Number(data.light);
-const air = Number(data.air);
-const noise = Number(data.noise);
-const activity = Number(data.activity);
+  onValue(sensorsRef, (snapshot) => {
 
-document.getElementById("lightBar").style.width = light + "%";
-document.getElementById("lightValue").textContent = light + "%";
+    const data = snapshot.val();
 
-document.getElementById("airBar").style.width = air + "%";
-document.getElementById("airValue").textContent = air + "%";
+    if (!data) {
+      console.log("No sensor data found.");
+      return;
+    }
 
-document.getElementById("noiseBar").style.width = noise + "%";
-document.getElementById("noiseValue").textContent = noise + "%";
+    console.log("Live sensor data:", data);
 
-document.getElementById("activityBar").style.width = activity + "%";
-document.getElementById("activityValue").textContent = activity + "%";
-  console.log("Live sensor data:", data);
-  let temperature = Number(data.temperature);
-let humidity = Number(data.humidity);
-const systemStatus = document.getElementById("systemStatus");
-const statusDot = document.getElementById("statusDot");
-const statusMessage = document.getElementById("statusMessage");
+    // =========================
+    // SENSOR VALUES
+    // =========================
 
-if (temperature >= 38 || humidity >= 80) {
-  systemStatus.textContent = "DANGER";
-  statusMessage.textContent = "Unsafe environmental conditions detected";
+    const temperature = Number(data.temperature);
+    const humidity = Number(data.humidity);
+    const light = Number(data.light);
+    const air = Number(data.air);
+    const noise = Number(data.noise);
+    const activity = Number(data.activity);
 
-  statusDot.style.background = "var(--red)";
-  statusDot.style.boxShadow = "0 0 14px var(--red)";
+    // =========================
+    // TEMPERATURE & HUMIDITY
+    // =========================
 
-} else if (temperature >= 34 || humidity >= 70) {
-  systemStatus.textContent = "WARNING";
-  statusMessage.textContent = "Environmental conditions should be monitored";
+    if (!Number.isNaN(temperature)) {
+      document.getElementById("temp").textContent =
+        temperature + "°C";
+    }
 
-  statusDot.style.background = "var(--yellow)";
-  statusDot.style.boxShadow = "0 0 14px var(--yellow)";
+    if (!Number.isNaN(humidity)) {
+      document.getElementById("humidity").textContent =
+        humidity + "%";
+    }
 
-} else {
-  systemStatus.textContent = "SAFE";
-  statusMessage.textContent = "All connected devices responding";
+    // =========================
+    // ENVIRONMENT BARS
+    // =========================
 
-  statusDot.style.background = "var(--green)";
-  statusDot.style.boxShadow = "0 0 14px var(--green)";
-}
-const environmentStatus = document.getElementById("environmentStatus");
-const safetyStatus = document.getElementById("safetyStatus");
-const learningStatus = document.getElementById("learningStatus");
+    if (!Number.isNaN(light)) {
+      document.getElementById("lightBar").style.width =
+        Math.max(0, Math.min(100, light)) + "%";
 
-if (temperature >= 38 || humidity >= 80) {
-  environmentStatus.textContent = "UNSAFE";
-  environmentStatus.className = "tag red";
+      document.getElementById("lightValue").textContent =
+        light + "%";
+    }
 
-  safetyStatus.textContent = "DANGER";
-  safetyStatus.className = "tag red";
+    if (!Number.isNaN(air)) {
+      document.getElementById("airBar").style.width =
+        Math.max(0, Math.min(100, air)) + "%";
 
-  learningStatus.textContent = "TAKE A BREAK";
-  learningStatus.className = "tag red";
+      document.getElementById("airValue").textContent =
+        air + "%";
+    }
 
-} else if (temperature >= 34 || humidity >= 70) {
-  environmentStatus.textContent = "WARNING";
-  environmentStatus.className = "tag yellow";
+    if (!Number.isNaN(noise)) {
+      document.getElementById("noiseBar").style.width =
+        Math.max(0, Math.min(100, noise)) + "%";
 
-  safetyStatus.textContent = "CAUTION";
-  safetyStatus.className = "tag yellow";
+      document.getElementById("noiseValue").textContent =
+        noise + "%";
+    }
 
-  learningStatus.textContent = "MONITOR";
-  learningStatus.className = "tag yellow";
+    if (!Number.isNaN(activity)) {
+      document.getElementById("activityBar").style.width =
+        Math.max(0, Math.min(100, activity)) + "%";
 
-} else {
-  environmentStatus.textContent = "SUITABLE";
-  environmentStatus.className = "tag green";
+      document.getElementById("activityValue").textContent =
+        activity + "%";
+    }
 
-  safetyStatus.textContent = "NO ISSUE";
-  safetyStatus.className = "tag green";
+    // =========================
+    // MAIN SYSTEM STATUS
+    // =========================
 
-  learningStatus.textContent = "READY";
-  learningStatus.className = "tag";
-}
-  let currentState;
+    const systemStatus =
+      document.getElementById("systemStatus");
 
-if (temperature >= 38 || humidity >= 80) {
-  currentState = "DANGER";
-} else if (temperature >= 34 || humidity >= 70) {
-  currentState = "WARNING";
-} else {
-  currentState = "SAFE";
-}
+    const statusDot =
+      document.getElementById("statusDot");
 
-if (currentState !== previousState) {
+    const statusMessage =
+      document.getElementById("statusMessage");
 
-  if (currentState === "DANGER") {
-    addAlert("🚨 Dangerous environmental conditions detected", "red");
+    let currentState;
 
-  } else if (currentState === "WARNING") {
-    addAlert("⚠️ Environmental conditions changed to WARNING", "yellow");
+    if (temperature >= 38 || humidity >= 80) {
 
-  } else {
-    addAlert("✅ Environment returned to SAFE conditions", "green");
-  }
+      currentState = "DANGER";
 
-  previousState = currentState;
-}
-});
+      systemStatus.textContent = "DANGER";
+      statusMessage.textContent =
+        "Unsafe environmental conditions detected";
+
+      statusDot.style.background = "var(--red)";
+      statusDot.style.boxShadow =
+        "0 0 14px var(--red)";
+
+    } else if (temperature >= 34 || humidity >= 70) {
+
+      currentState = "WARNING";
+
+      systemStatus.textContent = "WARNING";
+      statusMessage.textContent =
+        "Environmental conditions should be monitored";
+
+      statusDot.style.background = "var(--yellow)";
+      statusDot.style.boxShadow =
+        "0 0 14px var(--yellow)";
+
+    } else {
+
+      currentState = "SAFE";
+
+      systemStatus.textContent = "SAFE";
+      statusMessage.textContent =
+        "All connected devices responding";
+
+      statusDot.style.background = "var(--green)";
+      statusDot.style.boxShadow =
+        "0 0 14px var(--green)";
+    }
+
+    // =========================
+    // AI DECISION ENGINE
+    // =========================
+
+    const environmentStatus =
+      document.getElementById("environmentStatus");
+
+    const safetyStatus =
+      document.getElementById("safetyStatus");
+
+    const learningStatus =
+      document.getElementById("learningStatus");
+
+    if (currentState === "DANGER") {
+
+      environmentStatus.textContent = "UNSAFE";
+      environmentStatus.className = "tag red";
+
+      safetyStatus.textContent = "DANGER";
+      safetyStatus.className = "tag red";
+
+      learningStatus.textContent = "TAKE A BREAK";
+      learningStatus.className = "tag red";
+
+    } else if (currentState === "WARNING") {
+
+      environmentStatus.textContent = "WARNING";
+      environmentStatus.className = "tag yellow";
+
+      safetyStatus.textContent = "CAUTION";
+      safetyStatus.className = "tag yellow";
+
+      learningStatus.textContent = "MONITOR";
+      learningStatus.className = "tag yellow";
+
+    } else {
+
+      environmentStatus.textContent = "SUITABLE";
+      environmentStatus.className = "tag green";
+
+      safetyStatus.textContent = "NO ISSUE";
+      safetyStatus.className = "tag green";
+
+      learningStatus.textContent = "READY";
+      learningStatus.className = "tag";
+    }
+
+    // =========================
+    // AUTOMATIC ALERTS
+    // =========================
+
+    if (currentState !== previousState) {
+
+      if (currentState === "DANGER") {
+
+        addAlert(
+          "🚨 Dangerous environmental conditions detected",
+          "red"
+        );
+
+      } else if (currentState === "WARNING") {
+
+        addAlert(
+          "⚠️ Environmental conditions changed to WARNING",
+          "yellow"
+        );
+
+      } else {
+
+        addAlert(
+          "✅ Environment returned to SAFE conditions",
+          "green"
+        );
+      }
+
+      previousState = currentState;
+    }
+  });
 </script>
 </body>
 </html>
