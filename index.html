@@ -44,6 +44,7 @@ header{
 .brand h1{
   margin:0;
   font-size:28px;
+  letter-spacing:.5px;
 }
 
 .brand p{
@@ -174,6 +175,33 @@ header{
   color:#73e0a2;
 }
 
+/* AI FEEDBACK */
+
+.feedback{
+  margin-top:14px;
+  padding:14px;
+  border-radius:12px;
+  background:#0a1727;
+  border:1px solid var(--line);
+}
+
+.feedback-title{
+  color:var(--blue);
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:7px;
+}
+
+.feedback-text{
+  font-size:14px;
+  line-height:1.5;
+  color:#dcecff;
+}
+
+/* SOS */
+
 .alertbox{
   border:1px solid #5a2630;
   background:#28151b;
@@ -279,7 +307,8 @@ button{
     grid-template-columns:1fr;
   }
 
-  .wide,.full{
+  .wide,
+  .full{
     grid-column:auto;
   }
 
@@ -300,33 +329,51 @@ button{
 <div class="wrap">
 
 <header>
-  <div class="brand">
-    <h1>AI SafeLearn Hub <span style="color:#49a6ff">V3.0</span></h1>
-    <p>Privacy-first AI safety & learning ecosystem</p>
-  </div>
 
-  <div class="pill">
-    CRYPTICON ASHOK VIHAR 2026 • LIVE DEMO
-  </div>
+<div class="brand">
+
+<h1>
+AI SafeLearn Hub
+<span style="color:#49a6ff">V3.0</span>
+</h1>
+
+<p>
+Privacy-first AI safety & learning ecosystem
+</p>
+
+</div>
+
+<div class="pill">
+CRYPTICON ASHOK VIHAR 2026 • LIVE DEMO
+</div>
+
 </header>
 
 
 <div class="grid">
 
+
 <!-- SYSTEM STATUS -->
 
 <div class="card metric">
 
-  <div class="label">SYSTEM STATUS</div>
+<div class="label">
+SYSTEM STATUS
+</div>
 
-  <div class="value status">
-    <span id="statusDot" class="dot"></span>
-    <span id="systemStatus">SAFE</span>
-  </div>
+<div class="value status">
 
-  <div id="statusMessage" class="sub">
-    All connected devices responding
-  </div>
+<span id="statusDot" class="dot"></span>
+
+<span id="systemStatus">
+SAFE
+</span>
+
+</div>
+
+<div id="statusMessage" class="sub">
+All connected devices responding
+</div>
 
 </div>
 
@@ -335,15 +382,17 @@ button{
 
 <div class="card metric">
 
-  <div class="label">TEMPERATURE</div>
+<div class="label">
+TEMPERATURE
+</div>
 
-  <div class="value" id="temp">
-    30°C
-  </div>
+<div class="value" id="temp">
+30°C
+</div>
 
-  <div class="sub">
-    Comfort range
-  </div>
+<div class="sub">
+Comfort range
+</div>
 
 </div>
 
@@ -352,32 +401,36 @@ button{
 
 <div class="card metric">
 
-  <div class="label">HUMIDITY</div>
+<div class="label">
+HUMIDITY
+</div>
 
-  <div class="value" id="humidity">
-    55%
-  </div>
+<div class="value" id="humidity">
+55%
+</div>
 
-  <div class="sub">
-    DHT11 sensor
-  </div>
+<div class="sub">
+DHT11 sensor
+</div>
 
 </div>
 
 
-<!-- STUDY SESSION -->
+<!-- STUDY -->
 
 <div class="card metric">
 
-  <div class="label">STUDY SESSION</div>
+<div class="label">
+STUDY SESSION
+</div>
 
-  <div class="value" id="study">
-    32 min
-  </div>
+<div class="value" id="study">
+32 min
+</div>
 
-  <div class="sub">
-    Activity detected
-  </div>
+<div class="sub">
+Activity detected
+</div>
 
 </div>
 
@@ -386,81 +439,169 @@ button{
 
 <div class="card wide">
 
-<h2>Environment</h2>
+<h2>
+Environment
+</h2>
 
 <div class="bars">
 
 <div class="barrow">
+
 <span>Light</span>
+
 <div class="track">
-<div id="lightBar" class="fill" style="width:82%"></div>
+<div id="lightBar"
+class="fill"
+style="width:82%">
 </div>
-<b id="lightValue">82%</b>
+</div>
+
+<b id="lightValue">
+82%
+</b>
+
 </div>
 
 
 <div class="barrow">
+
 <span>Air indicator</span>
+
 <div class="track">
-<div id="airBar" class="fill" style="width:71%"></div>
+<div id="airBar"
+class="fill"
+style="width:71%">
 </div>
-<b id="airValue">71%</b>
+</div>
+
+<b id="airValue">
+71%
+</b>
+
 </div>
 
 
 <div class="barrow">
+
 <span>Noise</span>
+
 <div class="track">
-<div id="noiseBar" class="fill" style="width:24%"></div>
+<div id="noiseBar"
+class="fill"
+style="width:24%">
 </div>
-<b id="noiseValue">24%</b>
+</div>
+
+<b id="noiseValue">
+24%
+</b>
+
 </div>
 
 
 <div class="barrow">
+
 <span>Activity</span>
+
 <div class="track">
-<div id="activityBar" class="fill" style="width:64%"></div>
-</div>
-<b id="activityValue">64%</b>
-</div>
-
+<div id="activityBar"
+class="fill"
+style="width:64%">
 </div>
 </div>
 
+<b id="activityValue">
+64%
+</b>
 
-<!-- AI ENGINE -->
+</div>
+
+</div>
+
+</div>
+
+
+<!-- AI DECISION ENGINE -->
 
 <div class="card wide">
 
-<h2>AI Decision Engine</h2>
+<h2>
+AI Decision Engine
+</h2>
+
 
 <div class="event">
-<span>Environment analysis</span>
-<span id="environmentStatus" class="tag green">
+
+<span>
+Environment analysis
+</span>
+
+<span id="environmentStatus"
+class="tag green">
 SUITABLE
 </span>
+
 </div>
 
+
 <div class="event">
-<span>Activity analysis</span>
-<span id="activityStatus" class="tag green">
+
+<span>
+Activity analysis
+</span>
+
+<span id="activityStatus"
+class="tag green">
 NORMAL
 </span>
+
 </div>
 
+
 <div class="event">
-<span>Safety analysis</span>
-<span id="safetyStatus" class="tag green">
+
+<span>
+Safety analysis
+</span>
+
+<span id="safetyStatus"
+class="tag green">
 NO ISSUE
 </span>
+
 </div>
 
+
 <div class="event">
-<span>Learning assistant</span>
-<span id="learningStatus" class="tag">
+
+<span>
+Learning assistant
+</span>
+
+<span id="learningStatus"
+class="tag">
 READY
 </span>
+
+</div>
+
+
+<!-- AI FEEDBACK -->
+
+<div class="feedback">
+
+<div class="feedback-title">
+AI Feedback
+</div>
+
+<div id="aiFeedback"
+class="feedback-text">
+
+Your learning environment looks good.
+Keep going!
+
+</div>
+
 </div>
 
 </div>
@@ -470,25 +611,45 @@ READY
 
 <div class="card full">
 
-<h2>🧠 SafeLearn Quick Quiz</h2>
+<h2>
+🧠 SafeLearn Quick Quiz
+</h2>
 
 <p style="color:#8fa7bf">
-Test your knowledge about AI, digital safety and responsible technology.
+
+Test your knowledge about AI,
+digital safety and responsible technology.
+
 </p>
 
-<div id="quizContainer" class="quiz-box">
 
-<div id="quizQuestion" class="quiz-question">
+<div id="quizContainer"
+class="quiz-box">
+
+<div id="quizQuestion"
+class="quiz-question">
+
 Click START QUIZ to begin.
+
 </div>
 
-<div id="quizOptions"></div>
 
-<button class="quiz-btn" onclick="startQuiz()">
+<div id="quizOptions">
+</div>
+
+
+<button
+class="quiz-btn"
+onclick="startQuiz()">
+
 START QUIZ
+
 </button>
 
-<div id="quizResult" class="quiz-result"></div>
+
+<div id="quizResult"
+class="quiz-result">
+</div>
 
 </div>
 
@@ -502,16 +663,26 @@ START QUIZ
 <div class="alertbox">
 
 <div>
-<strong>Emergency communication</strong>
+
+<strong>
+Emergency communication
+</strong>
 
 <div style="color:#b38e96;font-size:12px;margin-top:4px">
-Demo control — pressing this simulates the physical SOS button.
-</div>
+
+Demo control — pressing this simulates
+the physical SOS button.
 
 </div>
 
-<button class="sos" onclick="triggerSOS()">
+</div>
+
+<button
+class="sos"
+onclick="triggerSOS()">
+
 SIMULATE SOS
+
 </button>
 
 </div>
@@ -523,18 +694,34 @@ SIMULATE SOS
 
 <div class="card wide">
 
-<h2>Recent Alerts</h2>
+<h2>
+Recent Alerts
+</h2>
 
 <div id="alerts">
 
 <div class="event">
-<span>System initialized</span>
-<span class="tag green">LIVE</span>
+
+<span>
+System initialized
+</span>
+
+<span class="tag green">
+LIVE
+</span>
+
 </div>
 
 <div class="event">
-<span>Environment suitable</span>
-<span class="tag green">SAFE</span>
+
+<span>
+Environment suitable
+</span>
+
+<span class="tag green">
+SAFE
+</span>
+
 </div>
 
 </div>
@@ -546,26 +733,59 @@ SIMULATE SOS
 
 <div class="card wide">
 
-<h2>Learning Insights</h2>
+<h2>
+Learning Insights
+</h2>
 
 <div class="event">
-<span>Study time today</span>
-<b>3 h 25 min</b>
+
+<span>
+Study time today
+</span>
+
+<b>
+3 h 25 min
+</b>
+
 </div>
 
-<div class="event">
-<span>Breaks recorded</span>
-<b>3</b>
-</div>
 
 <div class="event">
-<span>Quick quiz score</span>
-<b id="quizScore">--</b>
+
+<span>
+Breaks recorded
+</span>
+
+<b>
+3
+</b>
+
 </div>
 
+
 <div class="event">
-<span>Safety alerts</span>
-<b id="safetyAlerts">0</b>
+
+<span>
+Quick quiz score
+</span>
+
+<b id="quizScore">
+--
+</b>
+
+</div>
+
+
+<div class="event">
+
+<span>
+Safety alerts
+</span>
+
+<b id="safetyAlerts">
+0
+</b>
+
 </div>
 
 </div>
@@ -575,23 +795,34 @@ SIMULATE SOS
 
 <div class="card full">
 
-<h2>Privacy First</h2>
+<h2>
+Privacy First
+</h2>
 
 <div class="privacy">
 
-<div>NO CAMERA</div>
+<div>
+NO CAMERA
+</div>
 
-<div>NO MICROPHONE RECORDING</div>
+<div>
+NO MICROPHONE RECORDING
+</div>
 
-<div>NO FACIAL RECOGNITION</div>
+<div>
+NO FACIAL RECOGNITION
+</div>
 
-<div>MINIMAL DATA COLLECTION</div>
+<div>
+MINIMAL DATA COLLECTION
+</div>
 
 </div>
 
 <p style="text-align:center;color:#8fa7bf;margin:15px 0 0;font-size:13px">
 
-“AI that observes the environment, not the student.”
+“AI that observes the environment,
+not the student.”
 
 </p>
 
@@ -602,7 +833,8 @@ SIMULATE SOS
 
 <div class="footer">
 
-AI SafeLearn Hub V3.0 • Live prototype dashboard • Connected to Firebase sensor data
+AI SafeLearn Hub V3.0 • Live prototype dashboard •
+Connected to Firebase sensor data
 
 </div>
 
@@ -617,30 +849,43 @@ AI SafeLearn Hub V3.0 • Live prototype dashboard • Connected to Firebase sen
 
 function triggerSOS(){
 
-  const box=document.getElementById("alerts");
+const box =
+document.getElementById("alerts");
 
-  const now=new Date().toLocaleTimeString([],{
-    hour:"2-digit",
-    minute:"2-digit"
-  });
+const now =
+new Date().toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
 
-  box.insertAdjacentHTML(
-    "afterbegin",
+box.insertAdjacentHTML(
+"afterbegin",
 
-    `<div class="event">
-      <span>🚨 SOS button activated — parent/teacher alert sent</span>
-      <span class="tag red">${now}</span>
-    </div>`
-  );
+`<div class="event">
 
-  document.getElementById("safetyAlerts").textContent =
-    Number(document.getElementById("safetyAlerts").textContent || 0) + 1;
+<span>
+🚨 SOS button activated — parent/teacher alert simulated
+</span>
 
-  alert(
-    "🚨 SAFELEARN EMERGENCY\n\n" +
-    "SOS button activated.\n" +
-    "Parent/teacher notification simulated."
-  );
+<span class="tag red">
+${now}
+</span>
+
+</div>`
+);
+
+const alerts =
+document.getElementById("safetyAlerts");
+
+alerts.textContent =
+Number(alerts.textContent || 0) + 1;
+
+alert(
+"🚨 SAFELEARN EMERGENCY\n\n" +
+"SOS button activated.\n" +
+"Parent/teacher notification simulated."
+);
+
 }
 
 
@@ -651,191 +896,238 @@ function triggerSOS(){
 const quizQuestions = [
 
 {
-  question:"What is the safest way to protect your online account?",
-  options:[
-    "Use the same password everywhere",
-    "Share your password with friends",
-    "Use a strong unique password",
-    "Write your password publicly"
-  ],
-  answer:2
+question:
+"What is the safest way to protect your online account?",
+
+options:[
+"Use the same password everywhere",
+"Share your password with friends",
+"Use a strong unique password",
+"Write your password publicly"
+],
+
+answer:2
 },
 
-{
-  question:"What should an AI system do with student data?",
-  options:[
-    "Collect everything possible",
-    "Collect only necessary data",
-    "Share it publicly",
-    "Sell it automatically"
-  ],
-  answer:1
-},
 
 {
-  question:"Which is an example of responsible AI?",
-  options:[
-    "Using AI to invade someone's privacy",
-    "Using AI while protecting user privacy",
-    "Sharing private information",
-    "Ignoring safety warnings"
-  ],
-  answer:1
+question:
+"What should an AI system do with student data?",
+
+options:[
+"Collect everything possible",
+"Collect only necessary data",
+"Share it publicly",
+"Sell it automatically"
+],
+
+answer:1
 },
 
-{
-  question:"What should you do if an online message asks for your password?",
-  options:[
-    "Send it immediately",
-    "Share it with everyone",
-    "Ignore or report the suspicious request",
-    "Post it online"
-  ],
-  answer:2
-},
 
 {
-  question:"Why is taking breaks during long study sessions useful?",
-  options:[
-    "It can help maintain focus and reduce fatigue",
-    "It makes learning impossible",
-    "It always lowers performance",
-    "It deletes your work"
-  ],
-  answer:0
+question:
+"Which is an example of responsible AI?",
+
+options:[
+"Using AI to invade someone's privacy",
+"Using AI while protecting user privacy",
+"Sharing private information",
+"Ignoring safety warnings"
+],
+
+answer:1
+},
+
+
+{
+question:
+"What should you do if an online message asks for your password?",
+
+options:[
+"Send it immediately",
+"Share it with everyone",
+"Ignore or report the suspicious request",
+"Post it online"
+],
+
+answer:2
+},
+
+
+{
+question:
+"Why are breaks useful during long study sessions?",
+
+options:[
+"They can help maintain focus and reduce fatigue",
+"They make learning impossible",
+"They always lower performance",
+"They delete your work"
+],
+
+answer:0
 }
 
 ];
 
-let currentQuestion = 0;
-let quizScore = 0;
-let quizRunning = false;
+
+let currentQuestion=0;
+let quizScore=0;
+let quizRunning=false;
 
 
 function startQuiz(){
 
-  currentQuestion = 0;
-  quizScore = 0;
-  quizRunning = true;
+currentQuestion=0;
 
-  document.getElementById("quizResult").textContent = "";
+quizScore=0;
 
-  showQuestion();
+quizRunning=true;
+
+document.getElementById("quizResult").textContent="";
+
+showQuestion();
+
 }
 
 
 function showQuestion(){
 
-  const question =
-    quizQuestions[currentQuestion];
+const question =
+quizQuestions[currentQuestion];
 
-  document.getElementById("quizQuestion").textContent =
-    "Question " +
-    (currentQuestion + 1) +
-    " of " +
-    quizQuestions.length +
-    ": " +
-    question.question;
+document.getElementById("quizQuestion").textContent =
+"Question " +
+(currentQuestion+1) +
+" of " +
+quizQuestions.length +
+": " +
+question.question;
 
-  const options =
-    document.getElementById("quizOptions");
 
-  options.innerHTML = "";
+const options =
+document.getElementById("quizOptions");
 
-  question.options.forEach((option,index)=>{
+options.innerHTML="";
 
-    const button =
-      document.createElement("button");
 
-    button.className = "option";
+question.options.forEach(
+(option,index)=>{
 
-    button.textContent =
-      option;
+const button =
+document.createElement("button");
 
-    button.onclick = function(){
+button.className="option";
 
-      answerQuestion(index);
+button.textContent=option;
 
-    };
+button.onclick=()=>{
+answerQuestion(index);
+};
 
-    options.appendChild(button);
+options.appendChild(button);
 
-  });
+});
 
 }
 
 
 function answerQuestion(selected){
 
-  if(!quizRunning) return;
+if(!quizRunning)
+return;
 
-  const question =
-    quizQuestions[currentQuestion];
 
-  if(selected === question.answer){
+const question =
+quizQuestions[currentQuestion];
 
-    quizScore++;
 
-  }
+if(selected === question.answer){
 
-  currentQuestion++;
+quizScore++;
 
-  if(currentQuestion < quizQuestions.length){
+}
 
-    showQuestion();
 
-  }else{
+currentQuestion++;
 
-    finishQuiz();
 
-  }
+if(currentQuestion <
+quizQuestions.length){
+
+showQuestion();
+
+}
+
+else{
+
+finishQuiz();
+
+}
 
 }
 
 
 function finishQuiz(){
 
-  quizRunning = false;
+quizRunning=false;
 
-  const percentage =
-    Math.round(
-      (quizScore / quizQuestions.length) * 100
-    );
 
-  document.getElementById("quizQuestion").textContent =
-    "Quiz complete!";
+const percentage =
+Math.round(
+(quizScore /
+quizQuestions.length) * 100
+);
 
-  document.getElementById("quizOptions").innerHTML = "";
 
-  document.getElementById("quizResult").textContent =
-    "🎯 Score: " +
-    quizScore +
-    "/" +
-    quizQuestions.length +
-    " (" +
-    percentage +
-    "%)";
+document.getElementById("quizQuestion").textContent =
+"Quiz complete!";
 
-  document.getElementById("quizScore").textContent =
-    percentage + "%";
 
-  const box =
-    document.getElementById("alerts");
+document.getElementById("quizOptions").innerHTML="";
 
-  const now =
-    new Date().toLocaleTimeString([],{
-      hour:"2-digit",
-      minute:"2-digit"
-    });
 
-  box.insertAdjacentHTML(
-    "afterbegin",
+document.getElementById("quizResult").textContent =
+"🎯 Score: " +
+quizScore +
+"/" +
+quizQuestions.length +
+" (" +
+percentage +
+"%)";
 
-    `<div class="event">
-      <span>🧠 Quick quiz completed — ${percentage}%</span>
-      <span class="tag green">${now}</span>
-    </div>`
-  );
+
+document.getElementById("quizScore").textContent =
+percentage + "%";
+
+
+const box =
+document.getElementById("alerts");
+
+
+const now =
+new Date().toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
+
+
+box.insertAdjacentHTML(
+"afterbegin",
+
+`<div class="event">
+
+<span>
+🧠 Quick quiz completed — ${percentage}%
+</span>
+
+<span class="tag green">
+${now}
+</span>
+
+</div>`
+);
 
 }
 
@@ -845,50 +1137,59 @@ function finishQuiz(){
 <script type="module">
 
 import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+from
+"https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
 
 import {
-  getDatabase,
-  ref,
-  onValue
+
+getDatabase,
+ref,
+onValue
+
 }
-from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+from
+"https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
 
 const firebaseConfig = {
 
-  apiKey:
-  "AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
+apiKey:
+"AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
 
-  authDomain:
-  "ai-safelearn-hub.firebaseapp.com",
+authDomain:
+"ai-safelearn-hub.firebaseapp.com",
 
-  databaseURL:
-  "https://ai-safelearn-hub-default-rtdb.asia-southeast1.firebasedatabase.app",
+databaseURL:
+"https://ai-safelearn-hub-default-rtdb.asia-southeast1.firebasedatabase.app",
 
-  projectId:
-  "ai-safelearn-hub",
+projectId:
+"ai-safelearn-hub",
 
-  storageBucket:
-  "ai-safelearn-hub.firebasestorage.app",
+storageBucket:
+"ai-safelearn-hub.firebasestorage.app",
 
-  messagingSenderId:
-  "412760110056",
+messagingSenderId:
+"412760110056",
 
-  appId:
-  "1:412760110056:web:48d33cb86ce0332bf4ea5d"
+appId:
+"1:412760110056:web:48d33cb86ce0332bf4ea5d"
 
 };
 
 
 const app =
-  initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+
 
 const database =
-  getDatabase(app);
+getDatabase(app);
+
 
 const sensorsRef =
-  ref(database,"sensors");
+ref(database,"sensors");
 
 
 let previousState="SAFE";
@@ -896,347 +1197,447 @@ let previousState="SAFE";
 
 function addAlert(message,type){
 
-  const box =
-    document.getElementById("alerts");
+const box =
+document.getElementById("alerts");
 
-  const now =
-    new Date().toLocaleTimeString([],{
-      hour:"2-digit",
-      minute:"2-digit"
-    });
 
-  box.insertAdjacentHTML(
-    "afterbegin",
+const now =
+new Date().toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
 
-    `<div class="event">
-      <span>${message}</span>
-      <span class="tag ${type}">${now}</span>
-    </div>`
-  );
+
+box.insertAdjacentHTML(
+"afterbegin",
+
+`<div class="event">
+
+<span>
+${message}
+</span>
+
+<span class="tag ${type}">
+${now}
+</span>
+
+</div>`
+);
 
 }
 
 
-onValue(sensorsRef,(snapshot)=>{
+onValue(
+sensorsRef,
+(snapshot)=>{
 
-  const data =
-    snapshot.val();
+const data =
+snapshot.val();
 
-  if(!data) return;
 
+if(!data)
+return;
 
-  const temperature =
-    Number(data.temperature);
 
-  const humidity =
-    Number(data.humidity);
+const temperature =
+Number(data.temperature);
 
-  const light =
-    Number(data.light);
+const humidity =
+Number(data.humidity);
 
-  const air =
-    Number(data.air);
+const light =
+Number(data.light);
 
-  const noise =
-    Number(data.noise);
+const air =
+Number(data.air);
 
-  const activity =
-    Number(data.activity);
+const noise =
+Number(data.noise);
 
+const activity =
+Number(data.activity);
 
-  /* SENSOR VALUES */
 
-  document.getElementById("temp").textContent =
-    temperature + "°C";
+/* SENSOR VALUES */
 
-  document.getElementById("humidity").textContent =
-    humidity + "%";
+document.getElementById("temp").textContent =
+temperature + "°C";
 
+document.getElementById("humidity").textContent =
+humidity + "%";
 
-  /* BARS */
 
-  document.getElementById("lightBar").style.width =
-    Math.max(0,Math.min(100,light)) + "%";
+/* BARS */
 
-  document.getElementById("lightValue").textContent =
-    light + "%";
+document.getElementById("lightBar").style.width =
+Math.max(0,Math.min(100,light)) + "%";
 
+document.getElementById("lightValue").textContent =
+light + "%";
 
-  document.getElementById("airBar").style.width =
-    Math.max(0,Math.min(100,air)) + "%";
 
-  document.getElementById("airValue").textContent =
-    air + "%";
+document.getElementById("airBar").style.width =
+Math.max(0,Math.min(100,air)) + "%";
 
+document.getElementById("airValue").textContent =
+air + "%";
 
-  document.getElementById("noiseBar").style.width =
-    Math.max(0,Math.min(100,noise)) + "%";
 
-  document.getElementById("noiseValue").textContent =
-    noise + "%";
+document.getElementById("noiseBar").style.width =
+Math.max(0,Math.min(100,noise)) + "%";
 
+document.getElementById("noiseValue").textContent =
+noise + "%";
 
-  document.getElementById("activityBar").style.width =
-    Math.max(0,Math.min(100,activity)) + "%";
 
-  document.getElementById("activityValue").textContent =
-    activity + "%";
+document.getElementById("activityBar").style.width =
+Math.max(0,Math.min(100,activity)) + "%";
 
+document.getElementById("activityValue").textContent =
+activity + "%";
 
-  /* SYSTEM STATUS */
 
-  const systemStatus =
-    document.getElementById("systemStatus");
+/* SYSTEM STATUS */
 
-  const statusDot =
-    document.getElementById("statusDot");
+const systemStatus =
+document.getElementById("systemStatus");
 
-  const statusMessage =
-    document.getElementById("statusMessage");
+const statusDot =
+document.getElementById("statusDot");
 
+const statusMessage =
+document.getElementById("statusMessage");
 
-  let currentState;
 
+let currentState;
 
-  if(
-    temperature>=38 ||
-    humidity>=80 ||
-    air<30 ||
-    noise>=90
-  ){
 
-    currentState="DANGER";
+if(
 
-    systemStatus.textContent="DANGER";
+temperature>=38 ||
+humidity>=80 ||
+air<30 ||
+noise>=90
 
-    statusMessage.textContent =
-      "Unsafe environmental conditions detected";
+){
 
-    statusDot.style.background="var(--red)";
+currentState="DANGER";
 
-    statusDot.style.boxShadow =
-      "0 0 14px var(--red)";
+systemStatus.textContent="DANGER";
 
-  }
+statusMessage.textContent =
+"Unsafe environmental conditions detected";
 
-  else if(
-    temperature>=34 ||
-    humidity>=70 ||
-    air<50 ||
-    noise>=70
-  ){
+statusDot.style.background =
+"var(--red)";
 
-    currentState="WARNING";
+statusDot.style.boxShadow =
+"0 0 14px var(--red)";
 
-    systemStatus.textContent="WARNING";
+}
 
-    statusMessage.textContent =
-      "Environmental conditions should be monitored";
+else if(
 
-    statusDot.style.background="var(--yellow)";
+temperature>=34 ||
+humidity>=70 ||
+air<50 ||
+noise>=70
 
-    statusDot.style.boxShadow =
-      "0 0 14px var(--yellow)";
+){
 
-  }
+currentState="WARNING";
 
-  else{
+systemStatus.textContent="WARNING";
 
-    currentState="SAFE";
+statusMessage.textContent =
+"Environmental conditions should be monitored";
 
-    systemStatus.textContent="SAFE";
+statusDot.style.background =
+"var(--yellow)";
 
-    statusMessage.textContent =
-      "All connected devices responding";
+statusDot.style.boxShadow =
+"0 0 14px var(--yellow)";
 
-    statusDot.style.background="var(--green)";
+}
 
-    statusDot.style.boxShadow =
-      "0 0 14px var(--green)";
+else{
 
-  }
+currentState="SAFE";
 
+systemStatus.textContent="SAFE";
 
-  /* AI ENGINE */
+statusMessage.textContent =
+"All connected devices responding";
 
-  const environmentStatus =
-    document.getElementById("environmentStatus");
+statusDot.style.background =
+"var(--green)";
 
-  const activityStatus =
-    document.getElementById("activityStatus");
+statusDot.style.boxShadow =
+"0 0 14px var(--green)";
 
-  const safetyStatus =
-    document.getElementById("safetyStatus");
+}
 
-  const learningStatus =
-    document.getElementById("learningStatus");
 
+/* AI DECISION ENGINE */
 
-  /* ENVIRONMENT */
+const environmentStatus =
+document.getElementById("environmentStatus");
 
-  if(
-    temperature>=38 ||
-    humidity>=80 ||
-    air<30
-  ){
+const activityStatus =
+document.getElementById("activityStatus");
 
-    environmentStatus.textContent="UNSAFE";
-    environmentStatus.className="tag red";
+const safetyStatus =
+document.getElementById("safetyStatus");
 
-  }
+const learningStatus =
+document.getElementById("learningStatus");
 
-  else if(
-    temperature>=34 ||
-    humidity>=70 ||
-    air<50
-  ){
+const aiFeedback =
+document.getElementById("aiFeedback");
 
-    environmentStatus.textContent="WARNING";
-    environmentStatus.className="tag yellow";
 
-  }
+/* ENVIRONMENT */
 
-  else{
+if(
 
-    environmentStatus.textContent="SUITABLE";
-    environmentStatus.className="tag green";
+temperature>=38 ||
+humidity>=80 ||
+air<30
 
-  }
+){
 
+environmentStatus.textContent="UNSAFE";
 
-  /* ACTIVITY */
+environmentStatus.className="tag red";
 
-  if(activity<30){
+}
 
-    activityStatus.textContent="LOW ACTIVITY";
-    activityStatus.className="tag yellow";
+else if(
 
-  }
+temperature>=34 ||
+humidity>=70 ||
+air<50
 
-  else if(activity>90){
+){
 
-    activityStatus.textContent="HIGH ACTIVITY";
-    activityStatus.className="tag yellow";
+environmentStatus.textContent="WARNING";
 
-  }
+environmentStatus.className="tag yellow";
 
-  else{
+}
 
-    activityStatus.textContent="NORMAL";
-    activityStatus.className="tag green";
+else{
 
-  }
+environmentStatus.textContent="SUITABLE";
 
+environmentStatus.className="tag green";
 
-  /* SAFETY */
+}
 
-  if(
-    temperature>=38 ||
-    humidity>=80 ||
-    air<30 ||
-    noise>=90
-  ){
 
-    safetyStatus.textContent="DANGER";
-    safetyStatus.className="tag red";
+/* ACTIVITY */
 
-  }
+if(activity<30){
 
-  else if(
-    temperature>=34 ||
-    humidity>=70 ||
-    air<50 ||
-    noise>=70
-  ){
+activityStatus.textContent="LOW ACTIVITY";
 
-    safetyStatus.textContent="CAUTION";
-    safetyStatus.className="tag yellow";
+activityStatus.className="tag yellow";
 
-  }
+}
 
-  else{
+else if(activity>90){
 
-    safetyStatus.textContent="NO ISSUE";
-    safetyStatus.className="tag green";
+activityStatus.textContent="HIGH ACTIVITY";
 
-  }
+activityStatus.className="tag yellow";
 
+}
 
-  /* LEARNING ASSISTANT */
+else{
 
-  if(noise>=70){
+activityStatus.textContent="NORMAL";
 
-    learningStatus.textContent="QUIETER AREA";
-    learningStatus.className="tag yellow";
+activityStatus.className="tag green";
 
-  }
+}
 
-  else if(light<30){
 
-    learningStatus.textContent="IMPROVE LIGHTING";
-    learningStatus.className="tag yellow";
+/* SAFETY */
 
-  }
+if(
 
-  else if(activity<30){
+temperature>=38 ||
+humidity>=80 ||
+air<30 ||
+noise>=90
 
-    learningStatus.textContent="TAKE A MOVEMENT BREAK";
-    learningStatus.className="tag yellow";
+){
 
-  }
+safetyStatus.textContent="DANGER";
 
-  else if(
-    temperature>=38 ||
-    humidity>=80
-  ){
+safetyStatus.className="tag red";
 
-    learningStatus.textContent="TAKE A BREAK";
-    learningStatus.className="tag red";
+}
 
-  }
+else if(
 
-  else{
+temperature>=34 ||
+humidity>=70 ||
+air<50 ||
+noise>=70
 
-    learningStatus.textContent="READY";
-    learningStatus.className="tag";
+){
 
-  }
+safetyStatus.textContent="CAUTION";
 
+safetyStatus.className="tag yellow";
 
-  /* AUTOMATIC ALERT */
+}
 
-  if(currentState!==previousState){
+else{
 
-    if(currentState==="DANGER"){
+safetyStatus.textContent="NO ISSUE";
 
-      addAlert(
-        "🚨 Dangerous environmental conditions detected",
-        "red"
-      );
+safetyStatus.className="tag green";
 
-    }
+}
 
-    else if(currentState==="WARNING"){
 
-      addAlert(
-        "⚠️ Environmental conditions changed to WARNING",
-        "yellow"
-      );
+/* LEARNING ASSISTANT */
 
-    }
+if(noise>=70){
 
-    else{
+learningStatus.textContent="QUIETER AREA";
 
-      addAlert(
-        "✅ Environment returned to SAFE conditions",
-        "green"
-      );
+learningStatus.className="tag yellow";
 
-    }
+}
 
-    previousState=currentState;
+else if(light<30){
 
-  }
+learningStatus.textContent="IMPROVE LIGHTING";
+
+learningStatus.className="tag yellow";
+
+}
+
+else if(activity<30){
+
+learningStatus.textContent="TAKE A MOVEMENT BREAK";
+
+learningStatus.className="tag yellow";
+
+}
+
+else if(
+
+temperature>=38 ||
+humidity>=80
+
+){
+
+learningStatus.textContent="TAKE A BREAK";
+
+learningStatus.className="tag red";
+
+}
+
+else{
+
+learningStatus.textContent="READY";
+
+learningStatus.className="tag";
+
+}
+
+
+/* =========================
+   AI FEEDBACK
+========================= */
+
+if(
+
+temperature>=38 ||
+humidity>=80 ||
+air<30
+
+){
+
+aiFeedback.textContent =
+"⚠️ Your environment may be unsuitable for studying. Consider taking a break and improving the environment.";
+
+}
+
+else if(noise>=70){
+
+aiFeedback.textContent =
+"🔊 The environment is noisy. Try moving to a quieter area to improve concentration.";
+
+}
+
+else if(light<30){
+
+aiFeedback.textContent =
+"💡 Lighting is low. Consider improving the lighting around your study area.";
+
+}
+
+else if(activity<30){
+
+aiFeedback.textContent =
+"🏃 Activity is low. Consider taking a short movement break before continuing.";
+
+}
+
+else if(activity>90){
+
+aiFeedback.textContent =
+"⚡ Activity levels are high. Make sure you are comfortable before continuing your study session.";
+
+}
+
+else{
+
+aiFeedback.textContent =
+"✅ Your learning environment looks good. Keep going!";
+
+}
+
+
+/* AUTOMATIC ALERTS */
+
+if(currentState!==previousState){
+
+if(currentState==="DANGER"){
+
+addAlert(
+"🚨 Dangerous environmental conditions detected",
+"red"
+);
+
+}
+
+else if(currentState==="WARNING"){
+
+addAlert(
+"⚠️ Environmental conditions changed to WARNING",
+"yellow"
+);
+
+}
+
+else{
+
+addAlert(
+"✅ Environment returned to SAFE conditions",
+"green"
+);
+
+}
+
+previousState=currentState;
+
+}
 
 });
 
