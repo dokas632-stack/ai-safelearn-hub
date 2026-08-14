@@ -170,6 +170,23 @@ function triggerSOS(){
 }
 </script>
 <script type="module">
+  function addAlert(message, type = "yellow") {
+  const box = document.getElementById("alerts");
+
+  const now = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  box.insertAdjacentHTML(
+    "afterbegin",
+    `<div class="event">
+      <span>${message}</span>
+      <span class="tag ${type}">${now}</span>
+    </div>`
+  );
+}
+  let previousState = "SAFE";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
@@ -265,6 +282,30 @@ if (temperature >= 38 || humidity >= 80) {
 
   learningStatus.textContent = "READY";
   learningStatus.className = "tag";
+}
+  let currentState;
+
+if (temperature >= 38 || humidity >= 80) {
+  currentState = "DANGER";
+} else if (temperature >= 34 || humidity >= 70) {
+  currentState = "WARNING";
+} else {
+  currentState = "SAFE";
+}
+
+if (currentState !== previousState) {
+
+  if (currentState === "DANGER") {
+    addAlert("🚨 Dangerous environmental conditions detected", "red");
+
+  } else if (currentState === "WARNING") {
+    addAlert("⚠️ Environmental conditions changed to WARNING", "yellow");
+
+  } else {
+    addAlert("✅ Environment returned to SAFE conditions", "green");
+  }
+
+  previousState = currentState;
 }
 });
 </script>
