@@ -470,7 +470,7 @@ button{
   </div>
 
   <div class="pill">
-    CRYPTICON ASHOK VIHAR 2026 • LIVE
+    CRYPTICON ASHOK VIHAR 2026 • LIVE SYSTEM
   </div>
 
 </header>
@@ -547,20 +547,20 @@ button{
 </div>
 
 
-<!-- STUDY -->
+<!-- LIVE STUDY SESSION -->
 
 <div class="card metric">
 
   <div class="label">
-    STUDY SESSION
+    LIVE STUDY SESSION
   </div>
 
   <div class="value" id="study">
-    32 min
+    00:00:00
   </div>
 
   <div class="sub">
-    Activity monitoring
+    Active session time
   </div>
 
 </div>
@@ -985,8 +985,8 @@ button{
       Study time today
     </span>
 
-    <b>
-      3 h 25 min
+    <b id="studyStats">
+      0 min
     </b>
 
   </div>
@@ -999,7 +999,7 @@ button{
     </span>
 
     <b>
-      3
+      0
     </b>
 
   </div>
@@ -1120,6 +1120,70 @@ let previousValues = {
 
 
 /* =====================================================
+   LIVE STUDY SESSION
+===================================================== */
+
+const studyStartTime = Date.now();
+
+
+function updateStudySession(){
+
+  const elapsed =
+    Date.now() - studyStartTime;
+
+
+  const totalSeconds =
+    Math.floor(elapsed / 1000);
+
+
+  const hours =
+    Math.floor(totalSeconds / 3600);
+
+
+  const minutes =
+    Math.floor(
+      (totalSeconds % 3600) / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  const formatted =
+    String(hours).padStart(2,"0") +
+    ":" +
+    String(minutes).padStart(2,"0") +
+    ":" +
+    String(seconds).padStart(2,"0");
+
+
+  document.getElementById(
+    "study"
+  ).textContent =
+    formatted;
+
+
+  document.getElementById(
+    "studyStats"
+  ).textContent =
+    hours > 0
+      ? `${hours} h ${minutes} min`
+      : `${minutes} min`;
+
+}
+
+
+setInterval(
+  updateStudySession,
+  1000
+);
+
+
+updateStudySession();
+
+
+/* =====================================================
    UTILITY
 ===================================================== */
 
@@ -1162,7 +1226,6 @@ function updateHealth(id,valid){
 
     el.style.color =
       "var(--red)";
-
   }
 
 }
@@ -1265,8 +1328,6 @@ function analyzeEnvironment(
   let recommendations = [];
 
 
-  /* TEMPERATURE */
-
   if(temperature >= 38){
 
     dangerReasons.push(
@@ -1289,8 +1350,6 @@ function analyzeEnvironment(
 
   }
 
-
-  /* HUMIDITY */
 
   if(humidity >= 80){
 
@@ -1315,8 +1374,6 @@ function analyzeEnvironment(
   }
 
 
-  /* AIR */
-
   if(air < 30){
 
     dangerReasons.push(
@@ -1339,8 +1396,6 @@ function analyzeEnvironment(
 
   }
 
-
-  /* NOISE */
 
   if(noise >= 90){
 
@@ -1365,8 +1420,6 @@ function analyzeEnvironment(
   }
 
 
-  /* LIGHT */
-
   if(light < 30){
 
     warningReasons.push(
@@ -1379,8 +1432,6 @@ function analyzeEnvironment(
 
   }
 
-
-  /* ACTIVITY */
 
   if(activity < 30){
 
@@ -1584,7 +1635,24 @@ function updateDashboard(data){
     Number(data.activity);
 
 
-  /* VALUES */
+  if(
+    !Number.isFinite(temperature) ||
+    !Number.isFinite(humidity) ||
+    !Number.isFinite(light) ||
+    !Number.isFinite(air) ||
+    !Number.isFinite(noise) ||
+    !Number.isFinite(activity)
+  ){
+
+    document.getElementById(
+      "statusMessage"
+    ).textContent =
+      "Incomplete sensor data received";
+
+    return;
+
+  }
+
 
   document.getElementById("temp")
     .textContent =
@@ -1625,8 +1693,6 @@ function updateDashboard(data){
     activity + "%";
 
 
-  /* TIMESTAMP */
-
   document.getElementById("lastUpdated")
     .textContent =
     new Date().toLocaleTimeString();
@@ -1635,8 +1701,6 @@ function updateDashboard(data){
   document.getElementById("lastUpdated")
     .classList.remove("offline");
 
-
-  /* HEALTH */
 
   updateHealth(
     "tempHealth",
@@ -1669,8 +1733,6 @@ function updateDashboard(data){
   );
 
 
-  /* AI */
-
   const analysis =
     analyzeEnvironment(
       temperature,
@@ -1685,8 +1747,6 @@ function updateDashboard(data){
   const state =
     analysis.state;
 
-
-  /* STATUS */
 
   const systemStatus =
     document.getElementById("systemStatus");
@@ -1737,8 +1797,6 @@ function updateDashboard(data){
 
   }
 
-
-  /* DECISION ENGINE */
 
   const environmentStatus =
     document.getElementById(
@@ -1806,8 +1864,6 @@ function updateDashboard(data){
   }
 
 
-  /* ACTIVITY */
-
   if(activity < 30){
 
     activityStatus.textContent =
@@ -1834,8 +1890,6 @@ function updateDashboard(data){
 
   }
 
-
-  /* LEARNING */
 
   if(noise >= 70){
 
@@ -1880,8 +1934,6 @@ function updateDashboard(data){
   }
 
 
-  /* AI EXPLANATION */
-
   const aiDecision =
     document.getElementById(
       "aiDecision"
@@ -1924,8 +1976,6 @@ function updateDashboard(data){
     analysis.recommendation;
 
 
-  /* SCORES */
-
   const safetyScore =
     calculateSafetyScore(
       temperature,
@@ -1956,8 +2006,6 @@ function updateDashboard(data){
   ).textContent =
     learningScore + "/100";
 
-
-  /* TRENDS */
 
   const noiseTrend =
     getTrend(
@@ -1999,8 +2047,6 @@ function updateDashboard(data){
   }
 
 
-  /* STATE CHANGE */
-
   if(state !== previousState){
 
     if(state === "DANGER"){
@@ -2038,8 +2084,6 @@ function updateDashboard(data){
 
   }
 
-
-  /* SAVE PREVIOUS */
 
   previousValues = {
     temperature,
@@ -2698,12 +2742,10 @@ onValue(
     ).textContent =
       "Firebase connection problem";
 
-
     document.getElementById(
       "lastUpdated"
     ).textContent =
       "Offline";
-
 
     document.getElementById(
       "lastUpdated"
