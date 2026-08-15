@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>AI SafeLearn Hub V4.0</title>
 
 <style>
@@ -20,9 +19,7 @@
   --line:#203852;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -113,15 +110,8 @@ header{
   box-shadow:0 0 14px var(--green);
 }
 
-.wide{
-  grid-column:span 2;
-}
-
-.full{
-  grid-column:1/-1;
-}
-
-/* BARS */
+.wide{grid-column:span 2}
+.full{grid-column:1/-1}
 
 .bars{
   display:grid;
@@ -150,8 +140,6 @@ header{
   transition:width .5s ease;
 }
 
-/* EVENTS */
-
 .event{
   display:flex;
   justify-content:space-between;
@@ -160,9 +148,7 @@ header{
   border-bottom:1px solid var(--line);
 }
 
-.event:last-child{
-  border-bottom:0;
-}
+.event:last-child{border-bottom:0}
 
 .tag{
   font-size:11px;
@@ -379,8 +365,6 @@ button{
   color:#b8cce0;
 }
 
-/* FOOTER */
-
 .footer{
   margin-top:18px;
   text-align:center;
@@ -398,54 +382,26 @@ button{
   color:var(--red)!important;
 }
 
-/* RESPONSIVE */
-
 @media(max-width:1000px){
-
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .wide{
-    grid-column:span 2;
-  }
-
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .wide{grid-column:span 2}
 }
 
 @media(max-width:650px){
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .wide,
-  .full{
-    grid-column:auto;
-  }
-
-  .privacy{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .health{
-    grid-template-columns:1fr 1fr;
-  }
-
+  .grid{grid-template-columns:1fr}
+  .wide,.full{grid-column:auto}
+  .privacy{grid-template-columns:1fr 1fr}
+  .health{grid-template-columns:1fr 1fr}
   header{
     align-items:flex-start;
     flex-direction:column;
   }
-
 }
 
 @media(max-width:450px){
-
-  .privacy,
-  .health,
-  .score-grid{
+  .privacy,.health,.score-grid{
     grid-template-columns:1fr;
   }
-
 }
 </style>
 </head>
@@ -483,9 +439,7 @@ button{
 
 <div class="card metric">
 
-  <div class="label">
-    SYSTEM STATUS
-  </div>
+  <div class="label">SYSTEM STATUS</div>
 
   <div class="value status">
 
@@ -513,9 +467,7 @@ button{
 
 <div class="card metric">
 
-  <div class="label">
-    TEMPERATURE
-  </div>
+  <div class="label">TEMPERATURE</div>
 
   <div class="value" id="temp">
     --°C
@@ -532,9 +484,7 @@ button{
 
 <div class="card metric">
 
-  <div class="label">
-    HUMIDITY
-  </div>
+  <div class="label">HUMIDITY</div>
 
   <div class="value" id="humidity">
     --%
@@ -547,20 +497,18 @@ button{
 </div>
 
 
-<!-- LIVE STUDY SESSION -->
+<!-- STUDY SESSION -->
 
 <div class="card metric">
 
-  <div class="label">
-    LIVE STUDY SESSION
-  </div>
+  <div class="label">LIVE STUDY SESSION</div>
 
   <div class="value" id="study">
-    00:00:00
+    00:00
   </div>
 
   <div class="sub">
-    Active session time
+    Live session duration
   </div>
 
 </div>
@@ -575,66 +523,46 @@ button{
   <div class="bars">
 
     <div class="barrow">
-
       <span>Light</span>
 
       <div class="track">
-        <div id="lightBar"
-             class="fill"
-             style="width:0%">
-        </div>
+        <div id="lightBar" class="fill" style="width:0%"></div>
       </div>
 
       <b id="lightValue">--</b>
-
     </div>
 
 
     <div class="barrow">
-
       <span>Air indicator</span>
 
       <div class="track">
-        <div id="airBar"
-             class="fill"
-             style="width:0%">
-        </div>
+        <div id="airBar" class="fill" style="width:0%"></div>
       </div>
 
       <b id="airValue">--</b>
-
     </div>
 
 
     <div class="barrow">
-
       <span>Noise</span>
 
       <div class="track">
-        <div id="noiseBar"
-             class="fill"
-             style="width:0%">
-        </div>
+        <div id="noiseBar" class="fill" style="width:0%"></div>
       </div>
 
       <b id="noiseValue">--</b>
-
     </div>
 
 
     <div class="barrow">
-
       <span>Activity</span>
 
       <div class="track">
-        <div id="activityBar"
-             class="fill"
-             style="width:0%">
-        </div>
+        <div id="activityBar" class="fill" style="width:0%"></div>
       </div>
 
       <b id="activityValue">--</b>
-
     </div>
 
   </div>
@@ -646,63 +574,38 @@ button{
 
 <div class="card wide">
 
-  <h2>
-    AI Decision Engine
-  </h2>
+  <h2>AI Decision Engine</h2>
 
   <div class="event">
+    <span>Environment analysis</span>
 
-    <span>
-      Environment analysis
-    </span>
-
-    <span id="environmentStatus"
-          class="tag green">
+    <span id="environmentStatus" class="tag green">
       WAITING
     </span>
-
   </div>
 
-
   <div class="event">
+    <span>Activity analysis</span>
 
-    <span>
-      Activity analysis
-    </span>
-
-    <span id="activityStatus"
-          class="tag green">
+    <span id="activityStatus" class="tag green">
       WAITING
     </span>
-
   </div>
 
-
   <div class="event">
+    <span>Safety analysis</span>
 
-    <span>
-      Safety analysis
-    </span>
-
-    <span id="safetyStatus"
-          class="tag green">
+    <span id="safetyStatus" class="tag green">
       WAITING
     </span>
-
   </div>
 
-
   <div class="event">
+    <span>Learning assistant</span>
 
-    <span>
-      Learning assistant
-    </span>
-
-    <span id="learningStatus"
-          class="tag">
+    <span id="learningStatus" class="tag">
       WAITING
     </span>
-
   </div>
 
 </div>
@@ -718,21 +621,18 @@ button{
 
   <div class="ai-explanation">
 
-    <div class="ai-title"
-         id="aiDecision">
+    <div class="ai-title" id="aiDecision">
       Waiting for sensor data...
     </div>
 
-    <div class="ai-reason"
-         id="aiReason">
+    <div class="ai-reason" id="aiReason">
 
       The AI will explain its decision
       after sensor readings are received.
 
     </div>
 
-    <div class="ai-recommendation"
-         id="aiRecommendation">
+    <div class="ai-recommendation" id="aiRecommendation">
 
       Recommendation:
       Waiting for environmental analysis.
@@ -750,8 +650,7 @@ button{
         SAFETY SCORE
       </div>
 
-      <div class="score-number"
-           id="safetyScore">
+      <div class="score-number" id="safetyScore">
         --/100
       </div>
 
@@ -764,8 +663,7 @@ button{
         LEARNING READINESS
       </div>
 
-      <div class="score-number"
-           id="learningScore">
+      <div class="score-number" id="learningScore">
         --/100
       </div>
 
@@ -780,93 +678,50 @@ button{
 
 <div class="card full">
 
-  <h2>
-    Sensor Health
-  </h2>
+  <h2>Sensor Health</h2>
 
   <div class="health">
 
     <div class="health-box">
-
-      <div class="health-name">
-        Temperature
-      </div>
-
-      <div id="tempHealth"
-           class="health-status">
+      <div class="health-name">Temperature</div>
+      <div id="tempHealth" class="health-status">
         ● Waiting
       </div>
-
     </div>
 
-
     <div class="health-box">
-
-      <div class="health-name">
-        Humidity
-      </div>
-
-      <div id="humidityHealth"
-           class="health-status">
+      <div class="health-name">Humidity</div>
+      <div id="humidityHealth" class="health-status">
         ● Waiting
       </div>
-
     </div>
 
-
     <div class="health-box">
-
-      <div class="health-name">
-        Light
-      </div>
-
-      <div id="lightHealth"
-           class="health-status">
+      <div class="health-name">Light</div>
+      <div id="lightHealth" class="health-status">
         ● Waiting
       </div>
-
     </div>
 
-
     <div class="health-box">
-
-      <div class="health-name">
-        Air
-      </div>
-
-      <div id="airHealth"
-           class="health-status">
+      <div class="health-name">Air</div>
+      <div id="airHealth" class="health-status">
         ● Waiting
       </div>
-
     </div>
 
-
     <div class="health-box">
-
-      <div class="health-name">
-        Noise
-      </div>
-
-      <div id="noiseHealth"
-           class="health-status">
+      <div class="health-name">Noise</div>
+      <div id="noiseHealth" class="health-status">
         ● Waiting
       </div>
-
     </div>
 
-
     <div class="health-box">
-
-      <div class="health-name">
-        Activity
-      </div>
-
-      <div id="activityHealth"
-           class="health-status">
+      <div class="health-name">Activity</div>
+      <div id="activityHealth" class="health-status">
         ● Waiting
       </div>
-
     </div>
 
   </div>
@@ -878,22 +733,16 @@ button{
 
 <div class="card full">
 
-  <h2>
-    🧠 AI Learning Quiz
-  </h2>
+  <h2>🧠 AI Learning Quiz</h2>
 
   <div id="quizArea">
 
-    <div class="quiz-progress"
-         id="quizProgress">
+    <div class="quiz-progress" id="quizProgress">
       Question 1 of 5
     </div>
 
-    <div class="quiz-question"
-         id="quizQuestion">
-
+    <div class="quiz-question" id="quizQuestion">
       Click START QUIZ to begin.
-
     </div>
 
     <div id="quizOptions"></div>
@@ -901,9 +750,7 @@ button{
     <button class="quiz-button"
             id="startQuiz"
             onclick="startQuiz()">
-
       START QUIZ
-
     </button>
 
   </div>
@@ -934,9 +781,7 @@ button{
 
     <button class="sos"
             onclick="triggerSOS()">
-
       SIMULATE SOS
-
     </button>
 
   </div>
@@ -948,9 +793,7 @@ button{
 
 <div class="card wide">
 
-  <h2>
-    Recent Alerts
-  </h2>
+  <h2>Recent Alerts</h2>
 
   <div id="alerts">
 
@@ -975,72 +818,31 @@ button{
 
 <div class="card wide">
 
-  <h2>
-    Learning & Safety Statistics
-  </h2>
+  <h2>Learning & Safety Statistics</h2>
 
   <div class="event">
-
-    <span>
-      Study time today
-    </span>
-
-    <b id="studyStats">
-      0 min
-    </b>
-
+    <span>Study session</span>
+    <b id="studyStats">00:00</b>
   </div>
 
-
   <div class="event">
-
-    <span>
-      Breaks recorded
-    </span>
-
-    <b>
-      0
-    </b>
-
+    <span>Breaks recorded</span>
+    <b>3</b>
   </div>
 
-
   <div class="event">
-
-    <span>
-      Quiz score
-    </span>
-
-    <b id="quizScoreInsight">
-      --
-    </b>
-
+    <span>Quiz score</span>
+    <b id="quizScoreInsight">--</b>
   </div>
 
-
   <div class="event">
-
-    <span>
-      Safety alerts
-    </span>
-
-    <b id="safetyAlertCount">
-      0
-    </b>
-
+    <span>Safety alerts</span>
+    <b id="safetyAlertCount">0</b>
   </div>
 
-
   <div class="event">
-
-    <span>
-      Quizzes completed
-    </span>
-
-    <b id="quizCount">
-      0
-    </b>
-
+    <span>Quizzes completed</span>
+    <b id="quizCount">0</b>
   </div>
 
 </div>
@@ -1050,27 +852,17 @@ button{
 
 <div class="card full">
 
-  <h2>
-    🔒 Privacy First
-  </h2>
+  <h2>🔒 Privacy First</h2>
 
   <div class="privacy">
 
-    <div>
-      NO CAMERA
-    </div>
+    <div>NO CAMERA</div>
 
-    <div>
-      NO MICROPHONE RECORDING
-    </div>
+    <div>NO MICROPHONE RECORDING</div>
 
-    <div>
-      NO FACIAL RECOGNITION
-    </div>
+    <div>NO FACIAL RECOGNITION</div>
 
-    <div>
-      MINIMAL DATA COLLECTION
-    </div>
+    <div>MINIMAL DATA COLLECTION</div>
 
   </div>
 
@@ -1104,9 +896,7 @@ Firebase-connected sensor monitoring
 ===================================================== */
 
 let safetyAlerts = 0;
-
 let quizzesCompleted = 0;
-
 let previousState = "SAFE";
 
 let previousValues = {
@@ -1123,53 +913,82 @@ let previousValues = {
    LIVE STUDY SESSION
 ===================================================== */
 
-const studyStartTime = Date.now();
+let studyStartTime = null;
+let firebaseOnline = false;
+
+
+/*
+  The session begins when the first valid live
+  Firebase sensor reading arrives.
+
+  It then counts the amount of time this dashboard
+  has been actively connected to live sensor data.
+*/
+
+function startLiveStudySession(){
+
+  if(studyStartTime === null){
+
+    studyStartTime = Date.now();
+
+  }
+
+}
+
+
+function formatDuration(seconds){
+
+  const hours =
+    Math.floor(seconds / 3600);
+
+  const minutes =
+    Math.floor((seconds % 3600) / 60);
+
+  const secs =
+    seconds % 60;
+
+  if(hours > 0){
+
+    return (
+      String(hours).padStart(2,"0") +
+      ":" +
+      String(minutes).padStart(2,"0") +
+      ":" +
+      String(secs).padStart(2,"0")
+    );
+
+  }
+
+  return (
+    String(minutes).padStart(2,"0") +
+    ":" +
+    String(secs).padStart(2,"0")
+  );
+
+}
 
 
 function updateStudySession(){
 
-  const elapsed =
-    Date.now() - studyStartTime;
+  if(studyStartTime === null)
+    return;
 
-
-  const totalSeconds =
-    Math.floor(elapsed / 1000);
-
-
-  const hours =
-    Math.floor(totalSeconds / 3600);
-
-
-  const minutes =
-    Math.floor(
-      (totalSeconds % 3600) / 60
-    );
-
+  if(!firebaseOnline)
+    return;
 
   const seconds =
-    totalSeconds % 60;
-
+    Math.floor(
+      (Date.now() - studyStartTime) / 1000
+    );
 
   const formatted =
-    String(hours).padStart(2,"0") +
-    ":" +
-    String(minutes).padStart(2,"0") +
-    ":" +
-    String(seconds).padStart(2,"0");
+    formatDuration(seconds);
 
+  document.getElementById("study")
+    .textContent = formatted;
 
-  document.getElementById(
-    "study"
-  ).textContent =
-    formatted;
-
-
-  document.getElementById(
-    "studyStats"
-  ).textContent =
-    hours > 0
-      ? `${hours} h ${minutes} min`
-      : `${minutes} min`;
+  document.getElementById("studyStats")
+    .textContent = formatted;
 
 }
 
@@ -1178,9 +997,6 @@ setInterval(
   updateStudySession,
   1000
 );
-
-
-updateStudySession();
 
 
 /* =====================================================
@@ -1213,19 +1029,14 @@ function updateHealth(id,valid){
 
   if(valid){
 
-    el.textContent =
-      "● Online";
-
-    el.style.color =
-      "var(--green)";
+    el.textContent = "● Online";
+    el.style.color = "var(--green)";
 
   }else{
 
-    el.textContent =
-      "● No data";
+    el.textContent = "● No data";
+    el.style.color = "var(--red)";
 
-    el.style.color =
-      "var(--red)";
   }
 
 }
@@ -1284,24 +1095,20 @@ function triggerSOS(){
 
 function getTrend(current,previous){
 
-  if(previous === null ||
-     !Number.isFinite(previous)){
+  if(
+    previous === null ||
+    !Number.isFinite(previous)
+  ){
 
     return "stable";
 
   }
 
-  if(current > previous + 2){
-
+  if(current > previous + 2)
     return "rising";
 
-  }
-
-  if(current < previous - 2){
-
+  if(current < previous - 2)
     return "falling";
-
-  }
 
   return "stable";
 
@@ -1322,39 +1129,66 @@ function analyzeEnvironment(
 ){
 
   let dangerReasons = [];
-
   let warningReasons = [];
-
   let recommendations = [];
 
+
+  /* TEMPERATURE — TOO HOT */
 
   if(temperature >= 38){
 
     dangerReasons.push(
-      `temperature is ${temperature}°C`
+      `temperature is dangerously high at ${temperature}°C`
     );
 
     recommendations.push(
-      "address the high temperature"
+      "move to a cooler environment"
     );
 
   }else if(temperature >= 34){
 
     warningReasons.push(
-      `temperature is ${temperature}°C`
+      `temperature is high at ${temperature}°C`
     );
 
     recommendations.push(
-      "monitor the room temperature"
+      "monitor and reduce the room temperature"
     );
 
   }
 
 
+  /* TEMPERATURE — TOO COLD */
+
+  else if(temperature <= 10){
+
+    dangerReasons.push(
+      `temperature is dangerously low at ${temperature}°C`
+    );
+
+    recommendations.push(
+      "move to a warmer environment"
+    );
+
+  }else if(temperature <= 16){
+
+    warningReasons.push(
+      `temperature is low at ${temperature}°C`
+    );
+
+    recommendations.push(
+      "increase the room temperature"
+    );
+
+  }
+
+
+  /* HUMIDITY */
+
   if(humidity >= 80){
 
     dangerReasons.push(
-      `humidity is ${humidity}%`
+      `humidity is very high at ${humidity}%`
     );
 
     recommendations.push(
@@ -1364,7 +1198,7 @@ function analyzeEnvironment(
   }else if(humidity >= 70){
 
     warningReasons.push(
-      `humidity is ${humidity}%`
+      `humidity is high at ${humidity}%`
     );
 
     recommendations.push(
@@ -1373,6 +1207,8 @@ function analyzeEnvironment(
 
   }
 
+
+  /* AIR */
 
   if(air < 30){
 
@@ -1397,6 +1233,8 @@ function analyzeEnvironment(
   }
 
 
+  /* NOISE */
+
   if(noise >= 90){
 
     dangerReasons.push(
@@ -1420,10 +1258,12 @@ function analyzeEnvironment(
   }
 
 
+  /* LIGHT */
+
   if(light < 30){
 
     warningReasons.push(
-      `light level is ${light}%`
+      `light level is low at ${light}%`
     );
 
     recommendations.push(
@@ -1433,10 +1273,12 @@ function analyzeEnvironment(
   }
 
 
+  /* ACTIVITY */
+
   if(activity < 30){
 
     warningReasons.push(
-      `activity level is low`
+      "activity level is low"
     );
 
     recommendations.push(
@@ -1516,7 +1358,7 @@ function analyzeEnvironment(
 
 
 /* =====================================================
-   SCORES
+   SAFETY SCORE
 ===================================================== */
 
 function calculateSafetyScore(
@@ -1529,9 +1371,19 @@ function calculateSafetyScore(
   let score = 100;
 
 
+  /* HOT */
+
   if(temperature >= 38)
     score -= 30;
   else if(temperature >= 34)
+    score -= 15;
+
+
+  /* COLD */
+
+  if(temperature <= 10)
+    score -= 30;
+  else if(temperature <= 16)
     score -= 15;
 
 
@@ -1562,6 +1414,10 @@ function calculateSafetyScore(
 }
 
 
+/* =====================================================
+   LEARNING SCORE
+===================================================== */
+
 function calculateLearningScore(
   temperature,
   humidity,
@@ -1573,9 +1429,19 @@ function calculateLearningScore(
   let score = 100;
 
 
+  /* HOT */
+
   if(temperature >= 38)
     score -= 25;
   else if(temperature >= 34)
+    score -= 10;
+
+
+  /* COLD */
+
+  if(temperature <= 10)
+    score -= 25;
+  else if(temperature <= 16)
     score -= 10;
 
 
@@ -1616,23 +1482,12 @@ function calculateLearningScore(
 
 function updateDashboard(data){
 
-  const temperature =
-    Number(data.temperature);
-
-  const humidity =
-    Number(data.humidity);
-
-  const light =
-    Number(data.light);
-
-  const air =
-    Number(data.air);
-
-  const noise =
-    Number(data.noise);
-
-  const activity =
-    Number(data.activity);
+  const temperature = Number(data.temperature);
+  const humidity = Number(data.humidity);
+  const light = Number(data.light);
+  const air = Number(data.air);
+  const noise = Number(data.noise);
+  const activity = Number(data.activity);
 
 
   if(
@@ -1644,15 +1499,18 @@ function updateDashboard(data){
     !Number.isFinite(activity)
   ){
 
-    document.getElementById(
-      "statusMessage"
-    ).textContent =
-      "Incomplete sensor data received";
-
     return;
 
   }
 
+
+  /* LIVE SESSION */
+
+  firebaseOnline = true;
+  startLiveStudySession();
+
+
+  /* VALUES */
 
   document.getElementById("temp")
     .textContent =
@@ -1665,42 +1523,35 @@ function updateDashboard(data){
 
 
   setBar("lightBar",light);
-
   setBar("airBar",air);
-
   setBar("noiseBar",noise);
-
   setBar("activityBar",activity);
 
 
   document.getElementById("lightValue")
-    .textContent =
-    light + "%";
-
+    .textContent = light + "%";
 
   document.getElementById("airValue")
-    .textContent =
-    air + "%";
-
+    .textContent = air + "%";
 
   document.getElementById("noiseValue")
-    .textContent =
-    noise + "%";
-
+    .textContent = noise + "%";
 
   document.getElementById("activityValue")
-    .textContent =
-    activity + "%";
+    .textContent = activity + "%";
 
+
+  /* TIMESTAMP */
 
   document.getElementById("lastUpdated")
     .textContent =
     new Date().toLocaleTimeString();
 
-
   document.getElementById("lastUpdated")
     .classList.remove("offline");
 
+
+  /* HEALTH */
 
   updateHealth(
     "tempHealth",
@@ -1733,6 +1584,8 @@ function updateDashboard(data){
   );
 
 
+  /* AI */
+
   const analysis =
     analyzeEnvironment(
       temperature,
@@ -1748,6 +1601,8 @@ function updateDashboard(data){
     analysis.state;
 
 
+  /* SYSTEM STATUS */
+
   const systemStatus =
     document.getElementById("systemStatus");
 
@@ -1758,8 +1613,7 @@ function updateDashboard(data){
     document.getElementById("statusMessage");
 
 
-  systemStatus.textContent =
-    state;
+  systemStatus.textContent = state;
 
 
   if(state === "DANGER"){
@@ -1798,71 +1652,49 @@ function updateDashboard(data){
   }
 
 
+  /* DECISION ENGINE */
+
   const environmentStatus =
-    document.getElementById(
-      "environmentStatus"
-    );
+    document.getElementById("environmentStatus");
 
   const activityStatus =
-    document.getElementById(
-      "activityStatus"
-    );
+    document.getElementById("activityStatus");
 
   const safetyStatus =
-    document.getElementById(
-      "safetyStatus"
-    );
+    document.getElementById("safetyStatus");
 
   const learningStatus =
-    document.getElementById(
-      "learningStatus"
-    );
+    document.getElementById("learningStatus");
 
 
   if(state === "DANGER"){
 
-    environmentStatus.textContent =
-      "UNSAFE";
+    environmentStatus.textContent = "UNSAFE";
+    environmentStatus.className = "tag red";
 
-    environmentStatus.className =
-      "tag red";
-
-    safetyStatus.textContent =
-      "DANGER";
-
-    safetyStatus.className =
-      "tag red";
+    safetyStatus.textContent = "DANGER";
+    safetyStatus.className = "tag red";
 
   }else if(state === "WARNING"){
 
-    environmentStatus.textContent =
-      "WARNING";
+    environmentStatus.textContent = "WARNING";
+    environmentStatus.className = "tag yellow";
 
-    environmentStatus.className =
-      "tag yellow";
-
-    safetyStatus.textContent =
-      "CAUTION";
-
-    safetyStatus.className =
-      "tag yellow";
+    safetyStatus.textContent = "CAUTION";
+    safetyStatus.className = "tag yellow";
 
   }else{
 
-    environmentStatus.textContent =
-      "SUITABLE";
+    environmentStatus.textContent = "SUITABLE";
+    environmentStatus.className = "tag green";
 
-    environmentStatus.className =
-      "tag green";
-
-    safetyStatus.textContent =
-      "NO ISSUE";
-
-    safetyStatus.className =
-      "tag green";
+    safetyStatus.textContent = "NO ISSUE";
+    safetyStatus.className = "tag green";
 
   }
 
+
+  /* ACTIVITY */
 
   if(activity < 30){
 
@@ -1891,6 +1723,8 @@ function updateDashboard(data){
   }
 
 
+  /* LEARNING */
+
   if(noise >= 70){
 
     learningStatus.textContent =
@@ -1903,6 +1737,26 @@ function updateDashboard(data){
 
     learningStatus.textContent =
       "IMPROVE LIGHTING";
+
+    learningStatus.className =
+      "tag yellow";
+
+  }else if(
+    temperature <= 16
+  ){
+
+    learningStatus.textContent =
+      "WARMER AREA";
+
+    learningStatus.className =
+      "tag yellow";
+
+  }else if(
+    temperature >= 34
+  ){
+
+    learningStatus.textContent =
+      "COOLER AREA";
 
     learningStatus.className =
       "tag yellow";
@@ -1934,20 +1788,16 @@ function updateDashboard(data){
   }
 
 
+  /* AI EXPLANATION */
+
   const aiDecision =
-    document.getElementById(
-      "aiDecision"
-    );
+    document.getElementById("aiDecision");
 
   const aiReason =
-    document.getElementById(
-      "aiReason"
-    );
+    document.getElementById("aiReason");
 
   const aiRecommendation =
-    document.getElementById(
-      "aiRecommendation"
-    );
+    document.getElementById("aiRecommendation");
 
 
   if(state === "DANGER"){
@@ -1971,10 +1821,11 @@ function updateDashboard(data){
   aiReason.textContent =
     analysis.reasonText;
 
-
   aiRecommendation.textContent =
     analysis.recommendation;
 
+
+  /* SCORES */
 
   const safetyScore =
     calculateSafetyScore(
@@ -1995,17 +1846,17 @@ function updateDashboard(data){
     );
 
 
-  document.getElementById(
-    "safetyScore"
-  ).textContent =
+  document.getElementById("safetyScore")
+    .textContent =
     safetyScore + "/100";
 
 
-  document.getElementById(
-    "learningScore"
-  ).textContent =
+  document.getElementById("learningScore")
+    .textContent =
     learningScore + "/100";
 
+
+  /* TRENDS */
 
   const noiseTrend =
     getTrend(
@@ -2047,6 +1898,21 @@ function updateDashboard(data){
   }
 
 
+  if(
+    temperatureTrend === "falling" &&
+    temperature <= 16
+  ){
+
+    addAlert(
+      "📉 Temperature is falling below the comfortable range",
+      "yellow"
+    );
+
+  }
+
+
+  /* STATE CHANGE */
+
   if(state !== previousState){
 
     if(state === "DANGER"){
@@ -2061,7 +1927,7 @@ function updateDashboard(data){
       document.getElementById(
         "safetyAlertCount"
       ).textContent =
-        safetyAlerts;
+      safetyAlerts;
 
     }else if(state === "WARNING"){
 
@@ -2079,11 +1945,12 @@ function updateDashboard(data){
 
     }
 
-    previousState =
-      state;
+    previousState = state;
 
   }
 
+
+  /* SAVE PREVIOUS */
 
   previousValues = {
     temperature,
@@ -2304,11 +2171,8 @@ answer:"Recommend reducing distractions"
 ===================================================== */
 
 let quizQuestions = [];
-
 let quizIndex = 0;
-
 let quizScore = 0;
-
 let quizLocked = false;
 
 
@@ -2343,13 +2207,11 @@ function startQuiz(){
     shuffle(questionBank).slice(0,5);
 
   quizIndex = 0;
-
   quizScore = 0;
 
   document.getElementById(
     "startQuiz"
-  ).style.display =
-    "none";
+  ).style.display = "none";
 
   showQuestion();
 
@@ -2381,7 +2243,6 @@ function showQuestion(){
       "quizOptions"
     );
 
-
   options.innerHTML = "";
 
 
@@ -2389,15 +2250,10 @@ function showQuestion(){
     .forEach(option=>{
 
       const button =
-        document.createElement(
-          "button"
-        );
+        document.createElement("button");
 
-      button.className =
-        "option";
-
-      button.textContent =
-        option;
+      button.className = "option";
+      button.textContent = option;
 
       button.onclick =
         () =>
@@ -2406,9 +2262,7 @@ function showQuestion(){
             option
           );
 
-      options.appendChild(
-        button
-      );
+      options.appendChild(button);
 
     });
 
@@ -2439,13 +2293,10 @@ function answerQuestion(
       btn.disabled = true;
 
       if(
-        btn.textContent ===
-        correct
+        btn.textContent === correct
       ){
 
-        btn.classList.add(
-          "correct"
-        );
+        btn.classList.add("correct");
 
       }
 
@@ -2456,15 +2307,11 @@ function answerQuestion(
 
     quizScore++;
 
-    button.classList.add(
-      "correct"
-    );
+    button.classList.add("correct");
 
   }else{
 
-    button.classList.add(
-      "wrong"
-    );
+    button.classList.add("wrong");
 
   }
 
@@ -2549,9 +2396,7 @@ function showQuizResult(){
 
     <div class="quiz-result">
 
-      <div>
-        QUIZ COMPLETE
-      </div>
+      <div>QUIZ COMPLETE</div>
 
       <div class="score">
         ${percentage}%
@@ -2675,7 +2520,7 @@ from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
+    "AIzaSyBCQxYkZ1_WrR17UUdX27mYVOgwL861z7o",
 
   authDomain:
     "ai-safelearn-hub.firebaseapp.com",
@@ -2711,6 +2556,7 @@ const sensorsRef =
 
 
 onValue(
+
   sensorsRef,
 
   snapshot => {
@@ -2721,21 +2567,27 @@ onValue(
 
     if(!data){
 
+      firebaseOnline = false;
+
       document.getElementById(
         "statusMessage"
       ).textContent =
-        "Waiting for sensor data";
+        "Connected — waiting for sensor data";
 
       return;
 
     }
 
 
+    firebaseOnline = true;
+
     updateDashboard(data);
 
   },
 
   error => {
+
+    firebaseOnline = false;
 
     document.getElementById(
       "statusMessage"
@@ -2749,9 +2601,7 @@ onValue(
 
     document.getElementById(
       "lastUpdated"
-    ).classList.add(
-      "offline"
-    );
+    ).classList.add("offline");
 
   }
 
