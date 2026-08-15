@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeLearn Hub V10.2</title>
+<style>
+:root{
+  --bg:#070c14;--surface:#0d1420;--surface2:#111b29;--surface3:#162233;
+  --text:#f2f6fb;--muted:#8292a8;--line:#1e2b3c;
+  --blue:#4da3ff;--green:#35d07f;--yellow:#f3c653;--red:#ff6474;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.45;
+}
+button{font:inherit}
+.app{min-height:100vh;display:grid;grid-template-columns:245px minmax(0,1fr)}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:#09111c;border-right:1px solid var(--line);padding:20px 14px;
+}
+.logo{padding:4px 9px 20px;border-bottom:1px solid var(--line)}
+.logo strong{font-size:19px;letter-spacing:-.4px}.logo span{color:var(--blue)}
+.logo small{display:block;color:var(--muted);margin-top:4px;font-size:11px}
+.nav{padding:16px 0}
+.nav a{
+  display:flex;align-items:center;gap:10px;padding:10px 11px;margin:3px 0;
+  color:#aebbd0;text-decoration:none;border-radius:9px;font-size:13px;
+}
+.nav a:hover,.nav a.active{background:var(--surface2);color:#fff}
+.side-live{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:13px}
+.side-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.side-status{display:flex;align-items:center;gap:8px;margin:8px 0 13px;font-weight:700;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}
+.side-stat{display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid var(--line);font-size:12px}
+.side-stat span:first-child{color:var(--muted)}
+.main{min-width:0;padding:24px}
+.topbar{
+  max-width:1450px;margin:0 auto 18px;display:flex;align-items:flex-end;
+  justify-content:space-between;gap:18px;
+}
+.eyebrow{font-size:11px;color:var(--blue);font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:27px;line-height:1.15;margin:5px 0 4px;letter-spacing:-.7px}
+.subtitle{color:var(--muted);font-size:13px}
+.live-pill{white-space:nowrap;border:1px solid #234361;background:#0b1b2b;color:#a9d4ff;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:700}
+.container{max-width:1450px;margin:auto}
+.grid{
+  display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;
+}
+.card{
+  min-width:0;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:15px;overflow:hidden;
+}
+.span-3{grid-column:span 3}.span-4{grid-column:span 4}
+.span-6{grid-column:span 6}.span-8{grid-column:span 8}.span-12{grid-column:1/-1}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.card h2{font-size:14px;margin:0;letter-spacing:-.15px}.muted{color:var(--muted);font-size:11px}
+.metric-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.metric-value{font-size:27px;font-weight:750;margin-top:6px;letter-spacing:-.6px}
+.metric-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.status-row{display:flex;align-items:center;gap:8px}
+.status-row .dot{width:9px;height:9px}
+.status-text{font-size:24px;font-weight:750}
+.progress{height:7px;background:#182333;border-radius:10px;overflow:hidden}
+.fill{height:100%;background:var(--blue);border-radius:10px;transition:width .35s ease}
+.env{display:grid;gap:11px}
+.env-row{display:grid;grid-template-columns:92px minmax(0,1fr) 45px;align-items:center;gap:9px;font-size:11px}
+.env-row b{text-align:right;font-size:11px}
+.tag{
+  display:inline-flex;align-items:center;justify-content:center;max-width:100%;
+  padding:4px 7px;border-radius:6px;background:#182638;color:#a9bad0;
+  font-size:9px;font-weight:800;letter-spacing:.04em;white-space:nowrap;
+}
+.tag.green{background:#123022;color:#72e1a0}.tag.yellow{background:#302815;color:#f5d477}.tag.red{background:#351a22;color:#ff8e9a}
+.decision{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:start;
+}
+.decision-title{font-size:19px;font-weight:750;margin-bottom:5px}
+.reason{font-size:12px;color:#b9c7d7;max-width:850px}
+.recommend{
+  margin-top:11px;padding:10px 11px;background:var(--surface2);
+  border-left:3px solid var(--blue);border-radius:7px;font-size:11px;color:#d5e4f4;
+}
+.score-wrap{display:flex;gap:9px;flex-wrap:wrap}
+.score{
+  min-width:112px;padding:10px 12px;border:1px solid var(--line);
+  border-radius:9px;background:#0a111b;
+}
+.score small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.07em}
+.score strong{display:block;font-size:21px;margin-top:3px}
+.rows{display:grid}
+.row{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--line);font-size:11px;
+}
+.row:last-child{border-bottom:0}
+.health-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.health{
+  min-width:0;background:#0a111b;border:1px solid var(--line);border-radius:8px;padding:9px;
+}
+.health-name{font-size:10px;color:#b6c3d2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.health-state{font-size:10px;color:var(--green);margin-top:4px}
+.alerts{max-height:190px;overflow:auto}
+.alert{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:11px}
+.alert:last-child{border-bottom:0}
+.quiz-q{font-size:15px;font-weight:700;margin:4px 0 12px}
+.option{
+  display:block;width:100%;text-align:left;padding:9px 10px;margin:6px 0;
+  background:var(--surface2);color:#dce7f3;border:1px solid var(--line);
+  border-radius:8px;cursor:pointer;font-size:11px;
+}
+.option:hover{border-color:#355170}.option.correct{border-color:var(--green);background:#123022}.option.wrong{border-color:var(--red);background:#351a22}
+.primary{
+  border:0;border-radius:8px;background:var(--blue);color:#06111d;
+  padding:9px 12px;font-weight:800;font-size:11px;cursor:pointer;
+}
+.primary:hover{filter:brightness(1.08)}
+.privacy{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.privacy div{
+  border:1px solid var(--line);background:#0a111b;border-radius:8px;
+  text-align:center;padding:10px 6px;font-size:9px;color:#aebdd0;font-weight:700;
+}
+.footer{text-align:center;color:#62738a;font-size:10px;padding:20px 0 5px}
+@media(max-width:1100px){
+  .app{grid-template-columns:210px minmax(0,1fr)}
+  .span-3{grid-column:span 6}.span-4{grid-column:span 6}
+  .span-8{grid-column:span 12}.health-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:760px){
+  .app{display:block}.sidebar{position:relative;height:auto;overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding:12px}
+  .logo{padding-bottom:10px}.nav{display:flex;overflow-x:auto;padding:8px 0}.nav a{white-space:nowrap}
+  .side-live{display:none}.main{padding:14px}.topbar{align-items:flex-start;flex-direction:column}.live-pill{white-space:normal}
+  .grid{grid-template-columns:1fr}.span-3,.span-4,.span-6,.span-8,.span-12{grid-column:1/-1}
+  .decision{grid-template-columns:1fr}.health-grid{grid-template-columns:repeat(2,1fr)}
+  .privacy{grid-template-columns:1fr 1fr}
+}
+@media(max-width:430px){
+  .main{padding:10px}.card{padding:12px}.metric-value{font-size:24px}.privacy{grid-template-columns:1fr}.env-row{grid-template-columns:78px minmax(0,1fr) 38px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="logo">
+    <strong>AI Safe<span>Learn</span></strong>
+    <small>V10.2 • Safety dashboard</small>
+  </div>
+
+  <nav class="nav">
+    <a class="active" href="#overview">● Overview</a>
+    <a href="#environment">◫ Environment</a>
+    <a href="#ai">✦ AI Decision</a>
+    <a href="#health">✓ Sensors</a>
+    <a href="#quiz">? Learning</a>
+    <a href="#privacy">⌁ Privacy</a>
+  </nav>
+
+  <div class="side-live">
+    <div class="side-title">Live connection</div>
+    <div class="side-status">
+      <span id="sideDot" class="dot"></span>
+      <span id="sideConnection">CONNECTING</span>
+    </div>
+    <div class="side-stat"><span>Temperature</span><b id="sideTemp">--</b></div>
+    <div class="side-stat"><span>Humidity</span><b id="sideHumidity">--</b></div>
+    <div class="side-stat"><span>Noise</span><b id="sideNoise">--</b></div>
+    <div class="side-stat"><span>Activity</span><b id="sideActivity">--</b></div>
+    <div class="side-stat"><span>AI state</span><b id="sideAI">--</b></div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="eyebrow">Privacy-first learning technology</div>
+      <h1>SafeLearn Hub</h1>
+      <div class="subtitle">Real-time environmental monitoring with explainable AI.</div>
+    </div>
+    <div class="live-pill" id="connectionPill">● FIREBASE CONNECTING</div>
+  </div>
+
+  <div class="container">
+    <section id="overview" class="grid">
+
+      <div class="card span-3">
+        <div class="metric-label">System status</div>
+        <div class="status-row" style="margin-top:7px">
+          <span id="mainDot" class="dot"></span>
+          <span id="systemStatus" class="status-text">WAITING</span>
+        </div>
+        <div id="statusMessage" class="metric-sub">Waiting for sensor data</div>
+      </div>
+
+      <div class="card span-3">
+        <div class="metric-label">Temperature</div>
+        <div class="metric-value" id="temp">--°C</div>
+        <div class="metric-sub">Live environmental reading</div>
+      </div>
+
+      <div class="card span-3">
+        <div class="metric-label">Humidity</div>
+        <div class="metric-value" id="humidity">--%</div>
+        <div class="metric-sub">DHT11 reading</div>
+      </div>
+
+      <div class="card span-3">
+        <div class="metric-label">Study session</div>
+        <div class="metric-value" id="study">00:00</div>
+        <div class="metric-sub" id="studySub">Live session timer</div>
+      </div>
+
+      <div class="card span-6" id="environment">
+        <div class="card-head"><h2>Environment</h2><span class="muted">Live sensor values</span></div>
+        <div class="env">
+          <div class="env-row"><span>Light</span><div class="progress"><div id="lightBar" class="fill" style="width:0%"></div></div><b id="lightValue">--</b></div>
+          <div class="env-row"><span>Air</span><div class="progress"><div id="airBar" class="fill" style="width:0%"></div></div><b id="airValue">--</b></div>
+          <div class="env-row"><span>Noise</span><div class="progress"><div id="noiseBar" class="fill" style="width:0%"></div></div><b id="noiseValue">--</b></div>
+          <div class="env-row"><span>Activity</span><div class="progress"><div id="activityBar" class="fill" style="width:0%"></div></div><b id="activityValue">--</b></div>
+        </div>
+      </div>
+
+      <div class="card span-6">
+        <div class="card-head"><h2>Decision checks</h2><span class="muted">Rule-based AI inputs</span></div>
+        <div class="rows">
+          <div class="row"><span>Environment</span><span id="environmentStatus" class="tag">WAITING</span></div>
+          <div class="row"><span>Activity</span><span id="activityStatus" class="tag">WAITING</span></div>
+          <div class="row"><span>Safety</span><span id="safetyStatus" class="tag">WAITING</span></div>
+          <div class="row"><span>Learning assistant</span><span id="learningStatus" class="tag">WAITING</span></div>
+        </div>
+      </div>
+
+      <div class="card span-8" id="ai">
+        <div class="card-head"><h2>AI explanation</h2><span class="muted">Explainable decision</span></div>
+        <div class="decision">
+          <div>
+            <div id="aiDecision" class="decision-title">Waiting for sensor data...</div>
+            <div id="aiReason" class="reason">The AI will explain its decision after readings are received.</div>
+            <div id="aiRecommendation" class="recommend">Recommendation: Waiting for environmental analysis.</div>
+          </div>
+          <div class="score-wrap">
+            <div class="score"><small>Safety</small><strong id="safetyScore">--</strong></div>
+            <div class="score"><small>Learning</small><strong id="learningScore">--</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span-4">
+        <div class="card-head"><h2>Session insight</h2></div>
+        <div class="row"><span>Breaks</span><b id="breakCount">0</b></div>
+        <div class="row"><span>Safety alerts</span><b id="safetyAlertCount">0</b></div>
+        <div class="row"><span>Quiz score</span><b id="quizScoreInsight">--</b></div>
+        <div class="row"><span>Quizzes</span><b id="quizCount">0</b></div>
+      </div>
+
+      <div class="card span-12" id="health">
+        <div class="card-head"><h2>Sensor health</h2><span id="lastUpdated" class="muted">Last update: --</span></div>
+        <div class="health-grid">
+          <div class="health"><div class="health-name">Temperature</div><div id="tempHealth" class="health-state">● Waiting</div></div>
+          <div class="health"><div class="health-name">Humidity</div><div id="humidityHealth" class="health-state">● Waiting</div></div>
+          <div class="health"><div class="health-name">Light</div><div id="lightHealth" class="health-state">● Waiting</div></div>
+          <div class="health"><div class="health-name">Air</div><div id="airHealth" class="health-state">● Waiting</div></div>
+          <div class="health"><div class="health-name">Noise</div><div id="noiseHealth" class="health-state">● Waiting</div></div>
+          <div class="health"><div class="health-name">Activity</div><div id="activityHealth" class="health-state">● Waiting</div></div>
+        </div>
+      </div>
+
+      <div class="card span-6">
+        <div class="card-head"><h2>Recent alerts</h2><span class="muted">Newest first</span></div>
+        <div id="alerts" class="alerts">
+          <div class="alert"><span>System initialized</span><span class="tag green">LIVE</span></div>
+        </div>
+      </div>
+
+      <div class="card span-6" id="quiz">
+        <div class="card-head"><h2>AI learning quiz</h2><span class="muted">5 randomized questions</span></div>
+        <div id="quizArea">
+          <div id="quizProgress" class="muted">Question 1 of 5</div>
+          <div id="quizQuestion" class="quiz-q">Test your understanding of SafeLearn.</div>
+          <div id="quizOptions"></div>
+          <button id="startQuiz" class="primary" onclick="startQuiz()">START QUIZ</button>
+        </div>
+      </div>
+
+      <div class="card span-12" id="privacy">
+        <div class="card-head"><h2>Privacy first</h2><span class="muted">Designed around minimal collection</span></div>
+        <div class="privacy">
+          <div>NO CAMERA</div><div>NO MICROPHONE RECORDING</div><div>NO FACIAL RECOGNITION</div><div>MINIMAL DATA COLLECTION</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">SafeLearn Hub V10.2 • Live Firebase prototype • AI decisions are based on configured sensor thresholds.</div>
+  </div>
+</main>
+</div>
+
+<script>
+let previousState="SAFE", safetyAlerts=0, quizzesCompleted=0;
+let previous={temperature:null,humidity:null,light:null,air:null,noise:null,activity:null};
+
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function bar(id,v){$(id).style.width=clamp(v,0,100)+"%"}
+function tag(id,text,type=""){const e=$(id);e.textContent=text;e.className="tag"+(type?" "+type:"")}
+function health(id,ok){$(id).textContent=ok?"● Online":"● No data";$(id).style.color=ok?"var(--green)":"var(--red)"}
+function alertItem(message,type="green"){
+  $("alerts").insertAdjacentHTML("afterbegin",`<div class="alert"><span>${message}</span><span class="tag ${type}">${new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</span></div>`);
+}
+function trend(c,p){return p==null?"stable":c>p+2?"rising":c<p-2?"falling":"stable"}
+
+function analyze(t,h,l,a,n,x){
+  const danger=[],warn=[],rec=[];
+  if(t>=38){danger.push(`temperature is ${t}°C`);rec.push("cool the environment")}
+  else if(t>=34){warn.push(`temperature is ${t}°C`);rec.push("monitor room temperature")}
+  else if(t<=12){warn.push(`temperature is ${t}°C`);rec.push("warm the study environment")}
+  if(h>=80){danger.push(`humidity is ${h}%`);rec.push("improve ventilation")}
+  else if(h>=70){warn.push(`humidity is ${h}%`);rec.push("monitor humidity")}
+  if(a<30){danger.push(`air indicator is ${a}%`);rec.push("check surrounding air conditions")}
+  else if(a<50){warn.push(`air indicator is ${a}%`);rec.push("monitor air conditions")}
+  if(n>=90){danger.push(`noise is ${n}%`);rec.push("move to a quieter area")}
+  else if(n>=70){warn.push(`noise is ${n}%`);rec.push("reduce surrounding noise")}
+  if(l<30){warn.push(`light is ${l}%`);rec.push("improve study lighting")}
+  if(x<30){warn.push("activity is low");rec.push("consider a short movement break")}
+  const state=danger.length?"DANGER":warn.length?"WARNING":"SAFE";
+  const reason=state==="DANGER"?"The AI classified the environment as dangerous because "+danger.join(", ")+".":state==="WARNING"?"The AI detected conditions that may affect safety or learning: "+warn.join(", ")+".":`The AI found the current environment suitable. Temperature is ${t}°C, humidity is ${h}%, air is ${a}%, noise is ${n}%, light is ${l}%, and activity is ${x}%.`;
+  return {state,reason,recommendation:rec.length?"Recommendation: "+rec.slice(0,2).join(" and ")+".":"Recommendation: Conditions are suitable for studying. Continue the session."};
+}
+function safetyScore(t,h,a,n){
+  let s=100;
+  if(t>=38)s-=30;else if(t>=34||t<=12)s-=15;
+  if(h>=80)s-=20;else if(h>=70)s-=10;
+  if(a<30)s-=30;else if(a<50)s-=15;
+  if(n>=90)s-=25;else if(n>=70)s-=12;
+  return clamp(Math.round(s),0,100);
+}
+function learningScore(t,h,l,n,x){
+  let s=100;
+  if(t>=38)s-=25;else if(t>=34||t<=12)s-=10;
+  if(h>=80)s-=15;else if(h>=70)s-=8;
+  if(l<30)s-=20;else if(l<50)s-=8;
+  if(n>=90)s-=25;else if(n>=70)s-=15;
+  if(x<30)s-=10;
+  return clamp(Math.round(s),0,100);
+}
+
+function updateDashboard(d){
+  const t=Number(d.temperature),h=Number(d.humidity),l=Number(d.light),a=Number(d.air),n=Number(d.noise),x=Number(d.activity);
+  if(![t,h,l,a,n,x].every(Number.isFinite))return;
+  $("temp").textContent=t+"°C";$("humidity").textContent=h+"%";
+  bar("lightBar",l);bar("airBar",a);bar("noiseBar",n);bar("activityBar",x);
+  $("lightValue").textContent=l+"%";$("airValue").textContent=a+"%";$("noiseValue").textContent=n+"%";$("activityValue").textContent=x+"%";
+  $("lastUpdated").textContent="Last update: "+new Date().toLocaleTimeString();
+  health("tempHealth",true);health("humidityHealth",true);health("lightHealth",true);health("airHealth",true);health("noiseHealth",true);health("activityHealth",true);
+
+  const q=analyze(t,h,l,a,n,x), state=q.state;
+  $("systemStatus").textContent=state;
+  $("aiDecision").textContent=(state==="DANGER"?"🔴 AI Decision: DANGER":state==="WARNING"?"🟡 AI Decision: WARNING":"🟢 AI Decision: SAFE");
+  $("aiReason").textContent=q.reason;$("aiRecommendation").textContent=q.recommendation;
+  $("safetyScore").textContent=safetyScore(t,h,a,n)+"/100";
+  $("learningScore").textContent=learningScore(t,h,l,n,x)+"/100";
+  $("statusMessage").textContent=state==="DANGER"?"Unsafe environmental conditions detected":state==="WARNING"?"Conditions should be monitored":"Monitored conditions are within configured limits";
+
+  const color=state==="DANGER"?"var(--red)":state==="WARNING"?"var(--yellow)":"var(--green)";
+  $("mainDot").style.background=color;$("mainDot").style.boxShadow=`0 0 10px ${color}`;
+  tag("environmentStatus",state==="DANGER"?"UNSAFE":state==="WARNING"?"WARNING":"SUITABLE",state==="DANGER"?"red":state==="WARNING"?"yellow":"green");
+  tag("safetyStatus",state==="DANGER"?"DANGER":state==="WARNING"?"CAUTION":"NO ISSUE",state==="DANGER"?"red":state==="WARNING"?"yellow":"green");
+  tag("activityStatus",x<30?"LOW ACTIVITY":x>90?"HIGH ACTIVITY":"NORMAL",x<30||x>90?"yellow":"green");
+  tag("learningStatus",n>=70?"QUIETER AREA":l<30?"IMPROVE LIGHTING":x<30?"MOVEMENT BREAK":state==="DANGER"?"TAKE A BREAK":"READY",n>=70||l<30||x<30?"yellow":state==="DANGER"?"red":"green");
+
+  $("sideTemp").textContent=t+"°C";$("sideHumidity").textContent=h+"%";$("sideNoise").textContent=n+"%";$("sideActivity").textContent=x+"%";$("sideAI").textContent=state;
+  $("sideAI").style.color=color;
+
+  if(trend(n,previous.noise)==="rising"&&n>=70)alertItem("Noise level is rising","yellow");
+  if(state!==previousState){
+    if(state==="DANGER"){alertItem("AI detected dangerous conditions","red");safetyAlerts++;$("safetyAlertCount").textContent=safetyAlerts}
+    else if(state==="WARNING")alertItem("AI detected a warning condition","yellow");
+    else alertItem("Environment returned to safe conditions","green");
+    previousState=state;
+  }
+  previous={temperature:t,humidity:h,light:l,air:a,noise:n,activity:x};
+}
+
+function setConnection(online){
+  $("connectionPill").textContent=online?"● FIREBASE LIVE":"● FIREBASE OFFLINE";
+  $("connectionPill").style.color=online?"#a9d4ff":"#ff8e9a";
+  $("sideConnection").textContent=online?"LIVE":"OFFLINE";
+  $("sideDot").style.background=online?"var(--green)":"var(--red)";
+  $("sideDot").style.boxShadow=online?"0 0 9px var(--green)":"0 0 9px var(--red)";
+}
+
+/* Live study session: starts when valid sensor data arrives and pauses if no data is received. */
+let sessionStart=null,sessionSeconds=0,lastDataAt=0;
+function tickStudy(){
+  if(sessionStart!==null){sessionSeconds=Math.floor((Date.now()-sessionStart)/1000);const m=String(Math.floor(sessionSeconds/60)).padStart(2,"0"),s=String(sessionSeconds%60).padStart(2,"0");$("study").textContent=m+":"+s}
+}
+setInterval(tickStudy,1000);
+
+const questions=[
+["Which sensor commonly measures temperature and humidity?",["DHT11","LDR","PIR","Ultrasonic"],"DHT11"],
+["What does AI stand for?",["Artificial Intelligence","Automatic Internet","Advanced Input","Artificial Internet"],"Artificial Intelligence"],
+["Which sensor detects movement?",["PIR sensor","DHT11","LDR","Temperature sensor"],"PIR sensor"],
+["What does Firebase Realtime Database provide?",["Real-time data synchronization","Image editing","Video creation","Printing"],"Real-time data synchronization"],
+["Which component measures light intensity?",["LDR","DHT11","Buzzer","PIR"],"LDR"],
+["Why is privacy important in a learning system?",["To protect student information","To brighten the screen","To increase volume","To reduce internet speed"],"To protect student information"],
+["What does IoT mean?",["Internet of Things","Input of Technology","Internet of Text","Intelligent Online Tool"],"Internet of Things"],
+["What should happen when conditions become unsafe?",["Warn the user","Ignore the problem","Delete the dashboard","Disable all sensors"],"Warn the user"]
+];
+let quiz=[],qi=0,qs=0,locked=false;
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startQuiz(){quiz=shuffle(questions).slice(0,5);qi=0;qs=0;$("startQuiz").style.display="none";showQ()}
+function showQ(){locked=false;const q=quiz[qi];$("quizProgress").textContent=`Question ${qi+1} of ${quiz.length}`;$("quizQuestion").textContent=q[0];$("quizOptions").innerHTML="";shuffle(q[1]).forEach(o=>{const b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>answer(b,o,q[2]);$("quizOptions").appendChild(b)})}
+function answer(btn,sel,correct){if(locked)return;locked=true;document.querySelectorAll(".option").forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct")});if(sel===correct)qs++;else btn.classList.add("wrong");setTimeout(()=>{qi++;qi<quiz.length?showQ():quizResult()},450)}
+function quizResult(){const p=Math.round(qs/quiz.length*100);quizzesCompleted++;$("quizCount").textContent=quizzesCompleted;$("quizScoreInsight").textContent=p+"%";$("quizArea").innerHTML=`<div class="quiz-q">Quiz complete — ${p}%</div><div class="muted">${qs}/${quiz.length} correct. ${p>=80?"Strong understanding.":"Review the concepts and try another quiz."}</div><br><button class="primary" onclick="resetQuiz()">NEW QUIZ</button>`}
+function resetQuiz(){$("quizArea").innerHTML='<div id="quizProgress" class="muted">Question 1 of 5</div><div id="quizQuestion" class="quiz-q">Test your understanding of SafeLearn.</div><div id="quizOptions"></div><button id="startQuiz" class="primary" onclick="startQuiz()">START QUIZ</button>'}
+</script>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {getDatabase,ref,onValue} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
+ authDomain:"ai-safelearn-hub.firebaseapp.com",
+ databaseURL:"https://ai-safelearn-hub-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId:"ai-safelearn-hub",
+ storageBucket:"ai-safelearn-hub.firebasestorage.app",
+ messagingSenderId:"412760110056",
+ appId:"1:412760110056:web:48d33cb86ce0332bf4ea5d"
+};
+try{
+ const app=initializeApp(firebaseConfig),db=getDatabase(app),r=ref(db,"sensors");
+ onValue(r,snap=>{
+   const d=snap.val();
+   if(d){
+     setConnection(true);
+     if(sessionStart===null)sessionStart=Date.now()-sessionSeconds*1000;
+     lastDataAt=Date.now();
+     updateDashboard(d);
+   }
+ },err=>{setConnection(false);$("statusMessage").textContent="Firebase connection problem";});
+ setInterval(()=>{if(lastDataAt&&Date.now()-lastDataAt>15000){setConnection(false);sessionStart=null}},3000);
+}catch(e){setConnection(false)}
+</script>
+</body>
+</html>
