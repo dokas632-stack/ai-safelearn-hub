@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -133,7 +134,7 @@ h1{
 .env{display:grid;gap:11px}
 
 .env-row{
-  display:grid;grid-template-columns:92px minmax(0,1fr) 55px;
+  display:grid;grid-template-columns:92px minmax(0,1fr) 75px;
   align-items:center;gap:9px;font-size:11px;
 }
 .env-row b{text-align:right;font-size:11px}
@@ -268,7 +269,6 @@ h1{
   .span-3,.span-4,.span-6,.span-8,.span-12{grid-column:1/-1}
   .decision{grid-template-columns:1fr}
   .health-grid{grid-template-columns:repeat(2,1fr)}
-  .privacy{grid-template-columns:1fr 1fr}
 }
 
 @media(max-width:430px){
@@ -277,7 +277,7 @@ h1{
   .metric-value{font-size:24px}
   .privacy{grid-template-columns:1fr}
   .env-row{
-    grid-template-columns:78px minmax(0,1fr) 45px;
+    grid-template-columns:78px minmax(0,1fr) 55px;
   }
 }
 </style>
@@ -324,22 +324,22 @@ h1{
 
     <div class="side-stat">
       <span>Light</span>
-      <b>NOT CONNECTED</b>
+      <b id="sideLight">--</b>
     </div>
 
     <div class="side-stat">
       <span>Air</span>
-      <b>NOT CONNECTED</b>
+      <b id="sideAir">--</b>
     </div>
 
     <div class="side-stat">
       <span>Noise</span>
-      <b>NOT CONNECTED</b>
+      <b id="sideNoise">--</b>
     </div>
 
     <div class="side-stat">
       <span>Activity</span>
-      <b>NOT CONNECTED</b>
+      <b id="sideActivity">--</b>
     </div>
 
     <div class="side-stat">
@@ -450,7 +450,7 @@ h1{
 
         <div class="card-head">
           <h2>Environment</h2>
-          <span class="muted">Connected sensors only</span>
+          <span class="muted">Live sensor readings</span>
         </div>
 
         <div class="env">
@@ -474,33 +474,33 @@ h1{
           <div class="env-row">
             <span>Light</span>
             <div class="progress">
-              <div class="fill" style="width:0%;opacity:.2"></div>
+              <div id="lightBar" class="fill" style="width:0%"></div>
             </div>
-            <b class="not-connected">N/C</b>
+            <b id="lightValue">--</b>
           </div>
 
           <div class="env-row">
             <span>Air</span>
             <div class="progress">
-              <div class="fill" style="width:0%;opacity:.2"></div>
+              <div id="airBar" class="fill" style="width:0%"></div>
             </div>
-            <b class="not-connected">N/C</b>
+            <b id="airValue">--</b>
           </div>
 
           <div class="env-row">
             <span>Noise</span>
             <div class="progress">
-              <div class="fill" style="width:0%;opacity:.2"></div>
+              <div id="noiseBar" class="fill" style="width:0%"></div>
             </div>
-            <b class="not-connected">N/C</b>
+            <b id="noiseValue">--</b>
           </div>
 
           <div class="env-row">
             <span>Activity</span>
             <div class="progress">
-              <div class="fill" style="width:0%;opacity:.2"></div>
+              <div id="activityBar" class="fill" style="width:0%"></div>
             </div>
-            <b class="not-connected">N/C</b>
+            <b id="activityValue">--</b>
           </div>
 
         </div>
@@ -529,7 +529,7 @@ h1{
           <div class="row">
             <span>Activity</span>
             <span id="activityStatus" class="tag">
-              NOT CONNECTED
+              WAITING
             </span>
           </div>
 
@@ -658,29 +658,29 @@ h1{
 
           <div class="health">
             <div class="health-name">Light</div>
-            <div id="lightHealth" class="health-state not-connected">
-              ● Not connected
+            <div id="lightHealth" class="health-state">
+              ● Waiting
             </div>
           </div>
 
           <div class="health">
             <div class="health-name">Air</div>
-            <div id="airHealth" class="health-state not-connected">
-              ● Not connected
+            <div id="airHealth" class="health-state">
+              ● Waiting
             </div>
           </div>
 
           <div class="health">
             <div class="health-name">Noise</div>
-            <div id="noiseHealth" class="health-state not-connected">
-              ● Not connected
+            <div id="noiseHealth" class="health-state">
+              ● Waiting
             </div>
           </div>
 
           <div class="health">
             <div class="health-name">Activity</div>
-            <div id="activityHealth" class="health-state not-connected">
-              ● Not connected
+            <div id="activityHealth" class="health-state">
+              ● Waiting
             </div>
           </div>
 
@@ -764,7 +764,7 @@ h1{
 
     <div class="footer">
       SafeLearn Hub V10.2 • Live Firebase prototype •
-      AI decisions are based on configured temperature and humidity thresholds.
+      AI decisions use configured environmental thresholds.
     </div>
 
   </div>
@@ -775,52 +775,58 @@ h1{
 
 <script>
 
-let previousState="SAFE";
-let safetyAlerts=0;
-let quizzesCompleted=0;
+let previousState = "SAFE";
+let safetyAlerts = 0;
+let quizzesCompleted = 0;
 
-let previous={
+let previous = {
   temperature:null,
   humidity:null
 };
 
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-const clamp=(v,a,b)=>
+const clamp = (v,a,b) =>
   Math.max(a,Math.min(b,v));
 
+
 function bar(id,v){
-  const e=$(id);
+
+  const e = $(id);
+
   if(e){
-    e.style.width=clamp(v,0,100)+"%";
+    e.style.width =
+      clamp(v,0,100) + "%";
   }
 }
+
 
 function tag(id,text,type=""){
-  const e=$(id);
+
+  const e = $(id);
+
   if(!e)return;
 
-  e.textContent=text;
-  e.className="tag"+(type?" "+type:"");
+  e.textContent = text;
+
+  e.className =
+    "tag" + (type ? " " + type : "");
 }
 
-function health(id,ok,notConnected=false){
 
-  const e=$(id);
+function health(id,ok){
+
+  const e = $(id);
+
   if(!e)return;
 
-  if(notConnected){
+  e.textContent =
+    ok ? "● Online" : "● No data";
 
-    e.textContent="● Not connected";
-    e.style.color="var(--muted)";
-
-  }else{
-
-    e.textContent=ok?"● Online":"● No data";
-    e.style.color=ok?"var(--green)":"var(--red)";
-
-  }
+  e.style.color =
+    ok ? "var(--green)" : "var(--red)";
 }
+
 
 function alertItem(message,type="green"){
 
@@ -841,142 +847,166 @@ function alertItem(message,type="green"){
 
 
 /* =========================
-   AI ANALYSIS
+   AI FALLBACK ANALYSIS
 ========================= */
 
-function analyzeTemperatureHumidity(t,h){
+function analyzeEnvironment(t,h,light,air,noise){
 
-  const danger=[];
-  const warn=[];
-  const rec=[];
+  const danger = [];
+  const warn = [];
+  const rec = [];
 
-
-  /* TEMPERATURE */
-
-  if(t>=38){
+  if(t >= 38){
 
     danger.push(`temperature is ${t}°C`);
     rec.push("cool the environment");
 
-  }else if(t>=34){
+  }else if(t >= 34){
 
     warn.push(`temperature is ${t}°C`);
     rec.push("monitor room temperature");
 
-  }else if(t<=12){
+  }else if(t <= 12){
 
     warn.push(`temperature is ${t}°C`);
     rec.push("warm the study environment");
-
   }
 
 
-  /* HUMIDITY */
-
-  if(h>=80){
+  if(h >= 80){
 
     danger.push(`humidity is ${h}%`);
     rec.push("improve ventilation");
 
-  }else if(h>=70){
+  }else if(h >= 70){
 
     warn.push(`humidity is ${h}%`);
     rec.push("monitor humidity");
-
   }
 
 
-  const state=
+  if(air === "ALERT"){
+
+    danger.push("air quality alert");
+    rec.push("check ventilation");
+  }
+
+
+  if(light === "LOW"){
+
+    warn.push("low light");
+    rec.push("increase lighting");
+  }
+
+
+  if(noise === "AMBIENT"){
+
+    warn.push("ambient noise detected");
+    rec.push("reduce distractions");
+  }
+
+
+  const state =
     danger.length
-      ?"DANGER"
-      :warn.length
-      ?"WARNING"
-      :"SAFE";
+      ? "DANGER"
+      : warn.length
+      ? "WARNING"
+      : "SAFE";
 
 
-  let reason="";
+  let reason;
 
-  if(state==="DANGER"){
+  if(state === "DANGER"){
 
-    reason=
-      "The AI detected unsafe temperature or humidity conditions: "
-      +danger.join(", ")
-      +".";
+    reason =
+      "The AI detected unsafe conditions: "
+      + danger.join(", ")
+      + ".";
 
-  }else if(state==="WARNING"){
+  }else if(state === "WARNING"){
 
-    reason=
-      "The AI detected temperature or humidity conditions that should be monitored: "
-      +warn.join(", ")
-      +".";
+    reason =
+      "The AI detected conditions that should be monitored: "
+      + warn.join(", ")
+      + ".";
 
   }else{
 
-    reason=
+    reason =
       `The AI found the current environment suitable. Temperature is ${t}°C and humidity is ${h}%.`;
-
   }
 
 
-  return{
+  return {
 
-    state:state,
+    state,
 
-    reason:reason,
+    reason,
 
     recommendation:
       rec.length
-        ?"Recommendation: "+rec.slice(0,2).join(" and ")+"."
-        :"Recommendation: Conditions are suitable for studying. Continue the session."
-
+        ? "Recommendation: " +
+          rec.slice(0,2).join(" and ") +
+          "."
+        : "Recommendation: Conditions are suitable for studying. Continue the session."
   };
 
 }
 
 
 /* =========================
-   SAFETY SCORE
+   FALLBACK SAFETY SCORE
 ========================= */
 
-function safetyScore(t,h){
+function safetyScore(t,h,air){
 
-  let s=100;
+  let s = 100;
 
-  if(t>=38)
-    s-=30;
-  else if(t>=34 || t<=12)
-    s-=15;
+  if(t >= 38)
+    s -= 30;
+  else if(t >= 34 || t <= 12)
+    s -= 15;
 
-  if(h>=80)
-    s-=20;
-  else if(h>=70)
-    s-=10;
+  if(h >= 80)
+    s -= 20;
+  else if(h >= 70)
+    s -= 10;
+
+  if(air === "ALERT")
+    s -= 30;
 
   return clamp(Math.round(s),0,100);
-
 }
 
 
 /* =========================
-   LEARNING SCORE
+   FALLBACK LEARNING SCORE
 ========================= */
 
-function learningScore(t,h){
+function learningScore(t,h,light,air,noise){
 
-  let s=100;
+  let s = 100;
 
-  if(t>=38)
-    s-=25;
-  else if(t>=34 || t<=12)
-    s-=10;
+  if(t >= 38)
+    s -= 25;
+  else if(t >= 34 || t <= 12)
+    s -= 10;
 
-  if(h>=80)
-    s-=15;
-  else if(h>=70)
-    s-=8;
+  if(h >= 80)
+    s -= 15;
+  else if(h >= 70)
+    s -= 8;
+
+  if(light === "LOW")
+    s -= 20;
+
+  if(air === "ALERT")
+    s -= 20;
+
+  if(noise === "AMBIENT")
+    s -= 15;
 
   return clamp(Math.round(s),0,100);
-
 }
 
 
@@ -984,208 +1014,396 @@ function learningScore(t,h){
    DASHBOARD UPDATE
 ========================= */
 
-function updateDashboard(d){
+function updateDashboard(d,ai){
 
-  const t=Number(d.temperature);
-  const h=Number(d.humidity);
-
-
-  /* Require ONLY the sensors we actually have */
+  const t = Number(d.temperature);
+  const h = Number(d.humidity);
 
   if(!Number.isFinite(t) || !Number.isFinite(h))
     return;
 
 
-  /* MAIN READINGS */
-
-  $("temp").textContent=t+"°C";
-  $("humidity").textContent=h+"%";
-
-
-  /* ENVIRONMENT */
-
-  bar("temperatureBar",clamp((t/50)*100,0,100));
-  bar("humidityBar",h);
-
-  $("temperatureValue").textContent=t+"°C";
-  $("humidityValue").textContent=h+"%";
+  const light = d.light ?? "NO DATA";
+  const air = d.air ?? "NO DATA";
+  const noise = d.noise ?? "NO DATA";
+  const activity = d.activity ?? "NO DATA";
 
 
-  $("lastUpdated").textContent=
-    "Last update: "
-    +new Date().toLocaleTimeString();
+  /* =========================
+     MAIN READINGS
+  ========================= */
+
+  $("temp").textContent =
+    t + "°C";
+
+  $("humidity").textContent =
+    h + "%";
 
 
-  /* SENSOR HEALTH */
+  /* =========================
+     ENVIRONMENT
+  ========================= */
 
-  health("tempHealth",true);
-  health("humidityHealth",true);
+  $("temperatureValue").textContent =
+    t + "°C";
 
-  health("lightHealth",false,true);
-  health("airHealth",false,true);
-  health("noiseHealth",false,true);
-  health("activityHealth",false,true);
+  $("humidityValue").textContent =
+    h + "%";
 
+  $("lightValue").textContent =
+    light;
 
-  /* AI */
+  $("airValue").textContent =
+    air;
 
-  const q=analyzeTemperatureHumidity(t,h);
+  $("noiseValue").textContent =
+    noise;
 
-  const state=q.state;
-
-
-  $("systemStatus").textContent=state;
-
-
-  $("aiDecision").textContent=
-    state==="DANGER"
-      ?"🔴 AI Decision: DANGER"
-      :state==="WARNING"
-      ?"🟡 AI Decision: WARNING"
-      :"🟢 AI Decision: SAFE";
+  $("activityValue").textContent =
+    activity;
 
 
-  $("aiReason").textContent=q.reason;
+  bar(
+    "temperatureBar",
+    clamp((t / 50) * 100,0,100)
+  );
 
-  $("aiRecommendation").textContent=q.recommendation;
-
-
-  /* SCORES */
-
-  const sScore=safetyScore(t,h);
-  const lScore=learningScore(t,h);
-
-  $("safetyScore").textContent=sScore+"/100";
-  $("learningScore").textContent=lScore+"/100";
+  bar(
+    "humidityBar",
+    h
+  );
 
 
-  /* SYSTEM MESSAGE */
+  bar(
+    "lightBar",
+    light === "HIGH" ? 100 : 0
+  );
 
-  $("statusMessage").textContent=
-    state==="DANGER"
-      ?"Unsafe environmental conditions detected"
-      :state==="WARNING"
-      ?"Conditions should be monitored"
-      :"Temperature and humidity are within configured limits";
+  bar(
+    "airBar",
+    air === "OK" ? 100 : 30
+  );
 
+  bar(
+    "noiseBar",
+    noise === "AMBIENT" ? 100 : 0
+  );
 
-  /* MAIN STATUS COLOR */
-
-  const color=
-    state==="DANGER"
-      ?"var(--red)"
-      :state==="WARNING"
-      ?"var(--yellow)"
-      :"var(--green)";
-
-
-  $("mainDot").style.background=color;
-  $("mainDot").style.boxShadow=`0 0 10px ${color}`;
+  bar(
+    "activityBar",
+    activity === "ACTIVE" ? 100 : 0
+  );
 
 
-  /* DECISION CHECKS */
+  $("lastUpdated").textContent =
+    "Last update: " +
+    new Date().toLocaleTimeString();
+
+
+  /* =========================
+     SENSOR HEALTH
+  ========================= */
+
+  health(
+    "tempHealth",
+    Number.isFinite(t)
+  );
+
+  health(
+    "humidityHealth",
+    Number.isFinite(h)
+  );
+
+  health(
+    "lightHealth",
+    d.light !== undefined &&
+    d.light !== null
+  );
+
+  health(
+    "airHealth",
+    d.air !== undefined &&
+    d.air !== null
+  );
+
+  health(
+    "noiseHealth",
+    d.noise !== undefined &&
+    d.noise !== null
+  );
+
+  health(
+    "activityHealth",
+    d.activity !== undefined &&
+    d.activity !== null
+  );
+
+
+  /* =========================
+     AI
+  ========================= */
+
+  const fallback =
+    analyzeEnvironment(
+      t,
+      h,
+      light,
+      air,
+      noise
+    );
+
+
+  const state =
+    ai && ai.status
+      ? String(ai.status).toUpperCase()
+      : fallback.state;
+
+
+  const reason =
+    ai && ai.reason
+      ? ai.reason
+      : fallback.reason;
+
+
+  let sScore =
+    ai && Number.isFinite(Number(ai.safetyScore))
+      ? Number(ai.safetyScore)
+      : safetyScore(t,h,air);
+
+
+  let lScore =
+    ai && Number.isFinite(Number(ai.learningScore))
+      ? Number(ai.learningScore)
+      : learningScore(
+          t,
+          h,
+          light,
+          air,
+          noise
+        );
+
+
+  $("systemStatus").textContent =
+    state;
+
+
+  $("aiDecision").textContent =
+    state === "DANGER"
+      ? "🔴 AI Decision: DANGER"
+      : state === "WARNING"
+      ? "🟡 AI Decision: WARNING"
+      : "🟢 AI Decision: SAFE";
+
+
+  $("aiReason").textContent =
+    reason;
+
+
+  $("aiRecommendation").textContent =
+    fallback.recommendation;
+
+
+  $("safetyScore").textContent =
+    Math.round(sScore) + "/100";
+
+
+  $("learningScore").textContent =
+    Math.round(lScore) + "/100";
+
+
+  /* =========================
+     SYSTEM STATUS
+  ========================= */
+
+  $("statusMessage").textContent =
+    state === "DANGER"
+      ? "Unsafe environmental conditions detected"
+      : state === "WARNING"
+      ? "Conditions should be monitored"
+      : "Environment is suitable for learning";
+
+
+  const color =
+    state === "DANGER"
+      ? "var(--red)"
+      : state === "WARNING"
+      ? "var(--yellow)"
+      : "var(--green)";
+
+
+  $("mainDot").style.background =
+    color;
+
+  $("mainDot").style.boxShadow =
+    `0 0 10px ${color}`;
+
+
+  /* =========================
+     DECISION CHECKS
+  ========================= */
+
+  let environmentText = "SUITABLE";
+  let environmentType = "green";
+
+
+  if(air === "ALERT"){
+
+    environmentText = "AIR ALERT";
+    environmentType = "red";
+
+  }else if(light === "LOW"){
+
+    environmentText = "LOW LIGHT";
+    environmentType = "yellow";
+
+  }else if(state === "DANGER"){
+
+    environmentText = "UNSAFE";
+    environmentType = "red";
+
+  }else if(state === "WARNING"){
+
+    environmentText = "WARNING";
+    environmentType = "yellow";
+  }
+
 
   tag(
     "environmentStatus",
-    state==="DANGER"
-      ?"UNSAFE"
-      :state==="WARNING"
-      ?"WARNING"
-      :"SUITABLE",
-
-    state==="DANGER"
-      ?"red"
-      :state==="WARNING"
-      ?"yellow"
-      :"green"
+    environmentText,
+    environmentType
   );
 
 
   tag(
     "activityStatus",
-    "NOT CONNECTED"
+    activity,
+    activity === "ACTIVE"
+      ? "green"
+      : ""
   );
 
 
   tag(
     "safetyStatus",
-    state==="DANGER"
-      ?"DANGER"
-      :state==="WARNING"
-      ?"CAUTION"
-      :"NO ISSUE",
+    state === "DANGER"
+      ? "DANGER"
+      : state === "WARNING"
+      ? "CAUTION"
+      : "NO ISSUE",
 
-    state==="DANGER"
-      ?"red"
-      :state==="WARNING"
-      ?"yellow"
-      :"green"
+    state === "DANGER"
+      ? "red"
+      : state === "WARNING"
+      ? "yellow"
+      : "green"
   );
 
 
   tag(
     "learningStatus",
+    noise === "AMBIENT"
+      ? "MONITOR NOISE"
+      : state === "DANGER"
+      ? "TAKE A BREAK"
+      : "READY",
 
-    state==="DANGER"
-      ?"TAKE A BREAK"
-      :"READY",
-
-    state==="DANGER"
-      ?"red"
-      :"green"
+    noise === "AMBIENT" ||
+    state === "DANGER"
+      ? "yellow"
+      : "green"
   );
 
 
-  /* SIDEBAR */
+  /* =========================
+     SIDEBAR
+  ========================= */
 
-  $("sideTemp").textContent=t+"°C";
-  $("sideHumidity").textContent=h+"%";
-  $("sideAI").textContent=state;
+  $("sideTemp").textContent =
+    t + "°C";
 
-  $("sideAI").style.color=color;
+  $("sideHumidity").textContent =
+    h + "%";
+
+  $("sideLight").textContent =
+    light;
+
+  $("sideAir").textContent =
+    air;
+
+  $("sideNoise").textContent =
+    noise;
+
+  $("sideActivity").textContent =
+    activity;
+
+  $("sideAI").textContent =
+    state;
+
+  $("sideAI").style.color =
+    color;
 
 
-  /* ALERTS */
+  /* =========================
+     ALERTS
+  ========================= */
 
-  if(state!==previousState){
+  if(state !== previousState){
 
-    if(state==="DANGER"){
+    if(state === "DANGER"){
 
       alertItem(
-        "AI detected dangerous temperature/humidity conditions",
+        "AI detected dangerous environmental conditions",
         "red"
       );
 
       safetyAlerts++;
 
-      $("safetyAlertCount").textContent=safetyAlerts;
+      $("safetyAlertCount").textContent =
+        safetyAlerts;
 
-    }else if(state==="WARNING"){
+    }else if(state === "WARNING"){
 
       alertItem(
         "AI detected a warning condition",
         "yellow"
       );
 
-    }else{
+    }else if(previousState !== "SAFE"){
 
       alertItem(
         "Environment returned to safe conditions",
         "green"
       );
-
     }
 
-    previousState=state;
-
+    previousState = state;
   }
 
 
-  previous={
+  if(air === "ALERT"){
+
+    $("statusMessage").textContent =
+      "⚠ Air quality alert detected";
+  }
+
+
+  if(noise === "AMBIENT"){
+
+    $("studySub").textContent =
+      "Ambient noise detected";
+
+  }else{
+
+    $("studySub").textContent =
+      "Live session timer";
+  }
+
+
+  previous = {
     temperature:t,
     humidity:h
   };
-
 }
 
 
@@ -1195,34 +1413,34 @@ function updateDashboard(d){
 
 function setConnection(online){
 
-  $("connectionPill").textContent=
+  $("connectionPill").textContent =
     online
-      ?"● FIREBASE LIVE"
-      :"● FIREBASE OFFLINE";
+      ? "● FIREBASE LIVE"
+      : "● FIREBASE OFFLINE";
 
-  $("connectionPill").style.color=
+
+  $("connectionPill").style.color =
     online
-      ?"var(--green)"
-      :"var(--red)";
+      ? "var(--green)"
+      : "var(--red)";
 
 
-  $("sideConnection").textContent=
+  $("sideConnection").textContent =
     online
-      ?"LIVE"
-      :"OFFLINE";
+      ? "LIVE"
+      : "OFFLINE";
 
 
-  $("sideDot").style.background=
+  $("sideDot").style.background =
     online
-      ?"var(--green)"
-      :"var(--red)";
+      ? "var(--green)"
+      : "var(--red)";
 
 
-  $("sideDot").style.boxShadow=
+  $("sideDot").style.boxShadow =
     online
-      ?"0 0 9px var(--green)"
-      :"0 0 9px var(--red)";
-
+      ? "0 0 9px var(--green)"
+      : "0 0 9px var(--red)";
 }
 
 
@@ -1230,49 +1448,50 @@ function setConnection(online){
    STUDY SESSION
 ========================= */
 
-let sessionStart=null;
-let sessionSeconds=0;
-let lastDataAt=0;
+let sessionStart = null;
+let sessionSeconds = 0;
+let lastDataAt = 0;
 
 
 function tickStudy(){
 
-  if(sessionStart!==null){
+  if(sessionStart !== null){
 
-    sessionSeconds=
+    sessionSeconds =
       Math.floor(
-        (Date.now()-sessionStart)/1000
+        (Date.now() - sessionStart) / 1000
       );
 
 
-    const m=
+    const m =
       String(
-        Math.floor(sessionSeconds/60)
+        Math.floor(sessionSeconds / 60)
       ).padStart(2,"0");
 
 
-    const s=
+    const s =
       String(
-        sessionSeconds%60
+        sessionSeconds % 60
       ).padStart(2,"0");
 
 
-    $("study").textContent=
-      m+":"+s;
-
+    $("study").textContent =
+      m + ":" + s;
   }
-
 }
 
 
-setInterval(tickStudy,1000);
+setInterval(
+  tickStudy,
+  1000
+);
 
 
 /* =========================
    QUIZ
 ========================= */
 
-const questions=[
+const questions = [
 
 [
  "Which sensor commonly measures temperature and humidity?",
@@ -1325,67 +1544,72 @@ const questions=[
 ];
 
 
-let quiz=[];
-let qi=0;
-let qs=0;
-let locked=false;
+let quiz = [];
+let qi = 0;
+let qs = 0;
+let locked = false;
 
 
 function shuffle(a){
 
   return [...a].sort(
-    ()=>Math.random()-.5
+    () => Math.random() - 0.5
   );
-
 }
 
 
 function startQuiz(){
 
-  quiz=
+  quiz =
     shuffle(questions).slice(0,5);
 
-  qi=0;
-  qs=0;
+  qi = 0;
+  qs = 0;
 
-  $("startQuiz").style.display="none";
+  $("startQuiz").style.display =
+    "none";
 
   showQ();
-
 }
 
 
 function showQ(){
 
-  locked=false;
+  locked = false;
 
-  const q=quiz[qi];
+  const q = quiz[qi];
 
-  $("quizProgress").textContent=
+
+  $("quizProgress").textContent =
     `Question ${qi+1} of ${quiz.length}`;
 
-  $("quizQuestion").textContent=q[0];
 
-  $("quizOptions").innerHTML="";
+  $("quizQuestion").textContent =
+    q[0];
 
 
-  shuffle(q[1]).forEach(o=>{
+  $("quizOptions").innerHTML =
+    "";
 
-    const b=
+
+  shuffle(q[1]).forEach(o => {
+
+    const b =
       document.createElement("button");
 
-    b.className="option";
+    b.className =
+      "option";
 
-    b.textContent=o;
+    b.textContent =
+      o;
 
-    b.onclick=
-      ()=>answer(b,o,q[2]);
+    b.onclick =
+      () => answer(b,o,q[2]);
 
     $("quizOptions")
       .appendChild(b);
 
   });
-
 }
 
 
@@ -1393,58 +1617,59 @@ function answer(btn,sel,correct){
 
   if(locked)return;
 
-  locked=true;
+  locked = true;
 
 
   document
     .querySelectorAll(".option")
-    .forEach(b=>{
+    .forEach(b => {
 
-      b.disabled=true;
+      b.disabled = true;
 
-      if(b.textContent===correct)
+      if(b.textContent === correct)
         b.classList.add("correct");
 
     });
 
 
-  if(sel===correct)
+  if(sel === correct)
     qs++;
   else
     btn.classList.add("wrong");
 
 
-  setTimeout(()=>{
+  setTimeout(() => {
 
     qi++;
 
-    qi<quiz.length
-      ?showQ()
-      :quizResult();
+    qi < quiz.length
+      ? showQ()
+      : quizResult();
 
   },450);
-
 }
 
 
 function quizResult(){
 
-  const p=
+  const p =
     Math.round(
-      qs/quiz.length*100
+      qs / quiz.length * 100
     );
 
 
   quizzesCompleted++;
 
-  $("quizCount").textContent=
+
+  $("quizCount").textContent =
     quizzesCompleted;
 
-  $("quizScoreInsight").textContent=
-    p+"%";
+
+  $("quizScoreInsight").textContent =
+    p + "%";
 
 
-  $("quizArea").innerHTML=
+  $("quizArea").innerHTML =
 
     `<div class="quiz-q">
       Quiz complete — ${p}%
@@ -1452,9 +1677,9 @@ function quizResult(){
 
     <div class="muted">
       ${qs}/${quiz.length} correct.
-      ${p>=80
-        ?"Strong understanding."
-        :"Review the concepts and try another quiz."
+      ${p >= 80
+        ? "Strong understanding."
+        : "Review the concepts and try another quiz."
       }
     </div>
 
@@ -1465,13 +1690,12 @@ function quizResult(){
       onclick="resetQuiz()">
       NEW QUIZ
     </button>`;
-
 }
 
 
 function resetQuiz(){
 
-  $("quizArea").innerHTML=
+  $("quizArea").innerHTML =
 
     `<div id="quizProgress" class="muted">
       Question 1 of 5
@@ -1489,7 +1713,6 @@ function resetQuiz(){
       onclick="startQuiz()">
       START QUIZ
     </button>`;
-
 }
 
 </script>
@@ -1501,7 +1724,7 @@ import {
   initializeApp
 }
 from
-"https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 
 import {
@@ -1510,12 +1733,13 @@ import {
   onValue
 }
 from
-"https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
 
-const firebaseConfig={
+const firebaseConfig = {
 
-  apiKey:"AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
+  apiKey:
+  "AIzaSyBCxQYkZ1_WrR17UUdX27mYVOgwL861z7o",
 
   authDomain:
   "ai-safelearn-hub.firebaseapp.com",
@@ -1534,82 +1758,147 @@ const firebaseConfig={
 
   appId:
   "1:412760110056:web:48d33cb86ce0332bf4ea5d"
-
 };
 
 
 try{
 
-  const app=
+  const app =
     initializeApp(firebaseConfig);
 
 
-  const db=
+  const db =
     getDatabase(app);
 
 
-  const r=
+  const sensorsRef =
     ref(db,"sensors");
 
 
+  const aiRef =
+    ref(db,"ai");
+
+
+  let sensorData = {};
+  let aiData = {};
+
+
+  /* =========================
+     SENSOR DATA
+  ========================= */
+
   onValue(
 
-    r,
+    sensorsRef,
 
-    snap=>{
+    snap => {
 
-      const d=snap.val();
-
-
-      if(d){
-
-        setConnection(true);
+      const d =
+        snap.val();
 
 
-        if(sessionStart===null){
-
-          sessionStart=
-            Date.now()-
-            sessionSeconds*1000;
-
-        }
+      if(!d)
+        return;
 
 
-        lastDataAt=
-          Date.now();
+      sensorData =
+        d;
 
 
-        updateDashboard(d);
+      setConnection(true);
 
+
+      if(sessionStart === null){
+
+        sessionStart =
+          Date.now() -
+          sessionSeconds * 1000;
       }
+
+
+      lastDataAt =
+        Date.now();
+
+
+      updateDashboard(
+        sensorData,
+        aiData
+      );
 
     },
 
-    err=>{
+    err => {
 
-      console.error(err);
+      console.error(
+        "Sensor Firebase error:",
+        err
+      );
 
       setConnection(false);
 
-      $("statusMessage").textContent=
+      $("statusMessage").textContent =
         "Firebase connection problem";
+    }
+
+  );
+
+
+  /* =========================
+     AI DATA
+  ========================= */
+
+  onValue(
+
+    aiRef,
+
+    snap => {
+
+      const d =
+        snap.val();
+
+
+      if(!d)
+        return;
+
+
+      aiData =
+        d;
+
+
+      updateDashboard(
+        sensorData,
+        aiData
+      );
+
+    },
+
+    err => {
+
+      console.error(
+        "AI Firebase error:",
+        err
+      );
 
     }
 
   );
 
 
-  setInterval(()=>{
+  /* =========================
+     CONNECTION WATCHDOG
+  ========================= */
+
+  setInterval(() => {
 
     if(
       lastDataAt &&
-      Date.now()-lastDataAt>15000
+      Date.now() - lastDataAt > 15000
     ){
 
       setConnection(false);
 
-      sessionStart=null;
-
+      sessionStart =
+        null;
     }
 
   },3000);
@@ -1620,10 +1909,10 @@ try{
   console.error(e);
 
   setConnection(false);
-
 }
 
 </script>
 
 </body>
 </html>
+```
